@@ -1,6 +1,17 @@
 *.class
 
+# IDE Files #
+.classpath
+.settings
+.project
+
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# Maven Files #
+target/
+
+# OS Files  #
+.DS_Store
