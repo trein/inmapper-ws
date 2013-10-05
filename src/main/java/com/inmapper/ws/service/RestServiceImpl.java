@@ -32,7 +32,7 @@ public class RestServiceImpl implements RestService {
     public Response health() {
 	LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
 	
-	return Response.ok("Health check: alive").build();
+	return Response.ok("Health check: Alive").build();
     }
     
     @Override
