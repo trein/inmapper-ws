@@ -4,6 +4,8 @@
 .classpath
 .settings
 .project
+.idea
+inmapper-ws.iml
 
 # Package Files #
 *.jar
