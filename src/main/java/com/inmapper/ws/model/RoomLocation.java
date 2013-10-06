@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "room_point")
-public class RoomMapPoint {
+@Table(name = "room_location")
+@XmlRootElement
+public class RoomLocation {
     
     @Id
     @GeneratedValue
@@ -17,20 +19,18 @@ public class RoomMapPoint {
     @Column(name = "room_id", nullable = false)
     private String roomId;
     
-    @Column(name = "angle", nullable = false)
-    private final String angle;
+    @Column(name = "mobile_id", nullable = false)
+    private String mobileId;
     
-    @Column(name = "x", nullable = false)
-    private final String x;
+    private RoomPoint point;
     
-    @Column(name = "y", nullable = false)
-    private final String y;
+    RoomLocation() {
+    }
     
-    public RoomMapPoint(String roomId, String angle, String x, String y) {
+    public RoomLocation(String roomId, String mobileId, RoomPoint point) {
         this.roomId = roomId;
-        this.angle = angle;
-        this.x = x;
-        this.y = y;
+        this.mobileId = mobileId;
+        this.point = point;
     }
     
     public Long getId() {
@@ -41,16 +41,12 @@ public class RoomMapPoint {
         return this.roomId;
     }
     
-    public String getAngle() {
-        return this.angle;
+    public String getMobileId() {
+        return this.mobileId;
     }
     
-    public String getX() {
-        return this.x;
-    }
-    
-    public String getY() {
-        return this.y;
+    public RoomPoint getPoint() {
+        return this.point;
     }
     
     public void setRoomId(String roomId) {

@@ -1,43 +1,23 @@
 package com.inmapper.ws.service;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
-import org.jboss.resteasy.annotations.GZIP;
-
+import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.Position;
+import com.inmapper.ws.model.MobilePosition;
+import com.inmapper.ws.model.RoomLocation;
 
-@Path("/v")
+/**
+ * Service orchestrating mobile sensor data conversion and persistence.
+ * 
+ * @author trein
+ */
 public interface MappingService {
     
-    @GET
-    @Path("/health")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GZIP
-    Response health();
+    Long handlePosition(MobilePosition position) throws InvalidMobilePositionException;
     
-    @GET
-    @Path("/identification")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GZIP
-    Response identification();
+    RoomLocation retrieveLocation(Long id) throws ResourceNotFoundException;
     
-    @POST
-    @Path("/positions")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GZIP
-    Response positions(Position position);
-    
-    @GET
-    @Path("/positions/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GZIP
-    Response positionsId(@PathParam("id") String id) throws ResourceNotFoundException;
+    List<RoomLocation> retrieveRoomLocations(String roomId) throws ResourceNotFoundException;
     
 }

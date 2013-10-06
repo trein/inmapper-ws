@@ -5,17 +5,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.base.Objects;
 
 @XmlRootElement
-public class Position {
+public class MobilePosition {
     
     private Double x;
     private Double y;
     private Double z;
     private Double heading;
     
-    Position() {
+    MobilePosition() {
     }
     
-    public Position(Double x, Double y, Double z, Double heading) {
+    public MobilePosition(Double x, Double y, Double z, Double heading) {
         this.x = x;
         this.y = y;
         this.z = z;

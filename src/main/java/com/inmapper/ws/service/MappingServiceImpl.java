@@ -1,49 +1,62 @@
 package com.inmapper.ws.service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.Position;
+import com.inmapper.ws.model.MobilePosition;
+import com.inmapper.ws.model.RoomLocation;
+import com.inmapper.ws.repository.RoomLocationRepository;
 
+/**
+ * Service implementation orchestrating mobile sensor data conversion and persistence.
+ * 
+ * @author trein
+ */
 @Service
+@Transactional(readOnly = true)
 public class MappingServiceImpl implements MappingService {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(MappingServiceImpl.class);
-    
-    @Context
-    private HttpServletRequest request;
+    private final RoomLocationRepository repository;
+    private final MappingAlgorithm algorithm;
     
     @Autowired
-    private IdGenerator generator;
-    
-    @Override
-    public Response identification() {
-        return Response.ok(this.generator.next()).build();
+    public MappingServiceImpl(MappingAlgorithm algorithm, RoomLocationRepository repository) {
+        this.algorithm = algorithm;
+        this.repository = repository;
     }
     
     @Override
-    public Response health() {
-        LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
+    @Transactional(readOnly = false)
+    public Long handlePosition(MobilePosition position) throws InvalidMobilePositionException {
+        RoomLocation location = this.algorithm.decodePosition(position);
+        this.repository.save(location);
         
-        return Response.ok("Health check: Alive").build();
+        return location.getId();
     }
     
     @Override
-    public Response positions(Position position) {
-        LOGGER.debug("POST position received {}", position); //$NON-NLS-1$
-        return Response.ok().build();
+    public RoomLocation retrieveLocation(Long id) throws ResourceNotFoundException {
+        RoomLocation location = this.repository.findOne(id);
+        
+        if (location == null) {
+            throw new ResourceNotFoundException(id.toString());
+        }
+        return location;
     }
     
     @Override
-    public Response positionsId(String id) throws ResourceNotFoundException {
-        return Response.ok().build();
+    public List<RoomLocation> retrieveRoomLocations(String roomId) throws ResourceNotFoundException {
+        List<RoomLocation> locations = this.repository.findAllByRoomId(roomId);
+        
+        if ((locations == null) || locations.isEmpty()) {
+            throw new ResourceNotFoundException(roomId);
+        }
+        return locations;
     }
     
 }
