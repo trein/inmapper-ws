@@ -13,9 +13,9 @@ import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.Position;
 
 @Service
-public class RestServiceImpl implements RestService {
+public class MappingServiceImpl implements MappingService {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingServiceImpl.class);
     
     @Context
     private HttpServletRequest request;

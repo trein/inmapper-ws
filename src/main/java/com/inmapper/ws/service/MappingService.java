@@ -14,7 +14,7 @@ import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.Position;
 
 @Path("/v")
-public interface RestService {
+public interface MappingService {
     
     @GET
     @Path("/health")
