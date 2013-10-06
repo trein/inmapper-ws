@@ -25,25 +25,25 @@ public class RestServiceImpl implements RestService {
     
     @Override
     public Response identification() {
-	return Response.ok(this.generator.next()).build();
+        return Response.ok(this.generator.next()).build();
     }
     
     @Override
     public Response health() {
-	LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
-	
-	return Response.ok("Health check: Alive").build();
+        LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
+        
+        return Response.ok("Health check: Alive").build();
     }
     
     @Override
     public Response positions(Position position) {
-	LOGGER.debug("POST position received {}", position); //$NON-NLS-1$
-	return Response.ok().build();
+        LOGGER.debug("POST position received {}", position); //$NON-NLS-1$
+        return Response.ok().build();
     }
     
     @Override
     public Response positionsId(String id) throws ResourceNotFoundException {
-	return Response.ok().build();
+        return Response.ok().build();
     }
     
 }

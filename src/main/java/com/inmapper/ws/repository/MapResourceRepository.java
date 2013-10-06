@@ -18,28 +18,28 @@ public class MapResourceRepository implements ResourceRepository {
     
     @PostConstruct
     protected void init() {
-	List<Position> sampleResources = Lists.newArrayList(new Position(1d, 2d, 3d, 4d), new Position(1d, 2d, 3d, 4d),
-	        new Position(4d, 5d, 6d, 7d), new Position(5d, 6d, 7d, 8d), new Position(8d, 3d, 2d, 1d));
-	
-	this.resources = Maps.uniqueIndex(sampleResources, new Function<Position, Double>() {
-	    @Override
-	    public Double apply(Position from) {
-		return from.getHeading();
-	    }
-	});
+        List<Position> sampleResources = Lists.newArrayList(new Position(1d, 2d, 3d, 4d), new Position(1d, 2d, 3d, 4d),
+                new Position(4d, 5d, 6d, 7d), new Position(5d, 6d, 7d, 8d), new Position(8d, 3d, 2d, 1d));
+        
+        this.resources = Maps.uniqueIndex(sampleResources, new Function<Position, Double>() {
+            @Override
+            public Double apply(Position from) {
+                return from.getHeading();
+            }
+        });
     }
     
     @Override
     public Position getById(String id) throws ResourceNotFoundException {
-	if (this.resources.containsKey(id)) {
-	    return this.resources.get(id);
-	}
-	throw new ResourceNotFoundException(id);
+        if (this.resources.containsKey(id)) {
+            return this.resources.get(id);
+        }
+        throw new ResourceNotFoundException(id);
     }
     
     @Override
     public List<Position> getAll() {
-	return ImmutableList.copyOf(this.resources.values());
+        return ImmutableList.copyOf(this.resources.values());
     }
     
 }

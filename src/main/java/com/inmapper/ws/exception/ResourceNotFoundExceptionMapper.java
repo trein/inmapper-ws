@@ -18,18 +18,18 @@ public class ResourceNotFoundExceptionMapper implements ExceptionMapper<Resource
     
     @Override
     public Response toResponse(ResourceNotFoundException exception) {
-	String response = exception.getMessage();
-	
-	logException(exception);
-	
-	return Response.status(Status.BAD_REQUEST).entity(response).type(MediaType.TEXT_HTML).build();
+        String response = exception.getMessage();
+        
+        logException(exception);
+        
+        return Response.status(Status.BAD_REQUEST).entity(response).type(MediaType.TEXT_HTML).build();
     }
     
     private void logException(Throwable exception) {
-	String exceptionMessage = exception.getMessage();
-	String exceptionClass = exception.getClass().getName();
-	
-	LOGGER.warn("Security exception [{}] captured: {}", exceptionClass, exceptionMessage, exception);
+        String exceptionMessage = exception.getMessage();
+        String exceptionClass = exception.getClass().getName();
+        
+        LOGGER.warn("Security exception [{}] captured: {}", exceptionClass, exceptionMessage, exception);
     }
     
 }

@@ -9,7 +9,7 @@ public class IdGenerator {
     private static final double MAX = 99999999;
     
     public Double next() {
-	return Double.valueOf(MIN + (Math.random() * (MAX - MIN)));
+        return Double.valueOf(MIN + (Math.random() * (MAX - MIN)));
     }
     
 }

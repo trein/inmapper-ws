@@ -5,7 +5,6 @@ import java.util.List;
 import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.Position;
 
-
 /**
  * Repository interface for resources.
  * 

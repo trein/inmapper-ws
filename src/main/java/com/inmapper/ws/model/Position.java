@@ -16,32 +16,32 @@ public class Position {
     }
     
     public Position(Double x, Double y, Double z, Double heading) {
-	this.x = x;
-	this.y = y;
-	this.z = z;
-	this.heading = heading;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.heading = heading;
     }
     
     public Double getX() {
-	return this.x;
+        return this.x;
     }
     
     public Double getY() {
-	return this.y;
+        return this.y;
     }
     
     public Double getZ() {
-	return this.z;
+        return this.z;
     }
     
     public Double getHeading() {
-	return this.heading;
+        return this.heading;
     }
     
     @Override
     public String toString() {
-	return Objects.toStringHelper(this).add("x", this.x).add("y", this.y).add("z", this.z).add("heading", this.heading)
-	        .toString();
+        return Objects.toStringHelper(this).add("x", this.x).add("y", this.y).add("z", this.z).add("heading", this.heading)
+                .toString();
     }
     
 }
