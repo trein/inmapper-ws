@@ -1,0 +1,29 @@
+body {
+    color: #555;
+}
+li {
+    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 400;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+ul {
+    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: justify;
+}
+p {
+    text-align: justify;
+    font-size: 15px;
+    margin-bottom: 10px;
+    line-height: 170%;
+    font-weight: 400;
+    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
