@@ -6,9 +6,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class RoomPoint {
     
-    @Column(name = "angle", nullable = false)
-    private Double angle;
-    
     @Column(name = "x", nullable = false)
     private Double x;
     
@@ -18,14 +15,9 @@ public class RoomPoint {
     RoomPoint() {
     }
     
-    public RoomPoint(Double angle, Double x, Double y) {
-        this.angle = angle;
+    public RoomPoint(Double x, Double y) {
         this.x = x;
         this.y = y;
-    }
-    
-    public Double getAngle() {
-        return this.angle;
     }
     
     public Double getX() {

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>iNMapper | Real-Time Map</title>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/style.css" rel="stylesheet" media="screen">
 <script src="//code.jquery.com/jquery.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/map.js"></script>
 </head>
 <body>
@@ -19,6 +19,9 @@
         <input id="room_id" type="hidden" value="${room_id}">
 
         <canvas id="map_canvas"></canvas>
+        <br> <br>   
+
+        <button type="button" class="btn btn-primary" onclick="refreshLocations()">Refresh</button>
 
         <br> <br>
 
@@ -27,12 +30,13 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            Received data </a>
+                            Received data dump </a>
                     </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul id="raw_data">
+                        </ul>
                     </div>
                 </div>
             </div>

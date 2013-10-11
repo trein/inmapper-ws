@@ -26,7 +26,7 @@ public class RoomLocationRepositoryIT extends BaseRepositoryIT<RoomLocationRepos
     @Test
     public void shouldPersistNewLocations() {
         // given
-        RoomPoint point = new RoomPoint(180.0, 1.0, 2.0);
+        RoomPoint point = new RoomPoint(1.0, 2.0);
         RoomLocation position = new RoomLocation("hall", "6c637ce7-23ca-4f95-bb44-0419090d0337", point);
         
         // when
@@ -43,7 +43,7 @@ public class RoomLocationRepositoryIT extends BaseRepositoryIT<RoomLocationRepos
     @Test
     public void shouldPersistNewLocationAndPropagateChanges() {
         // given
-        RoomPoint point = new RoomPoint(180.0, 1.0, 2.0);
+        RoomPoint point = new RoomPoint(1.0, 2.0);
         RoomLocation position = new RoomLocation("hall", "6c637ce7-23ca-4f95-bb44-0419090d0337", point);
         
         // when
