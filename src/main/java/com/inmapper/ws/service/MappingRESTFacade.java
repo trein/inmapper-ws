@@ -1,5 +1,6 @@
 package com.inmapper.ws.service;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,10 +13,10 @@ import org.jboss.resteasy.annotations.GZIP;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.MobilePosition;
+import com.inmapper.ws.model.to.MobilePositionTo;
 
 @Path("/v")
-public interface MappingFacade {
+public interface MappingRESTFacade {
     
     @GET
     @Path("/health")
@@ -31,20 +32,15 @@ public interface MappingFacade {
     
     @POST
     @Path("/positions")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
-    Response positions(MobilePosition position) throws InvalidMobilePositionException;
+    Response positions(MobilePositionTo position) throws InvalidMobilePositionException;
     
     @GET
-    @Path("/locations/{id}")
+    @Path("{room_id}/mappings")
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
-    Response locations(@PathParam("id") Long id) throws ResourceNotFoundException;
-    
-    @GET
-    @Path("{room_id}/locations")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GZIP
-    Response roomLocations(@PathParam("room_id") String roomId) throws ResourceNotFoundException;
+    Response mappings(@PathParam("room_id") String roomId) throws ResourceNotFoundException;
     
 }

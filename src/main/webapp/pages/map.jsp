@@ -25,22 +25,8 @@
 
         <br> <br>
 
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            Received data dump </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <ul id="raw_data">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h3>Received data dump:</h3>
+        <div class="panel-group" id="accordion"></div>
         <br> <br>
 
         <hr>

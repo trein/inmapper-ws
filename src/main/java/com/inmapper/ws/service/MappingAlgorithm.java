@@ -3,8 +3,8 @@ package com.inmapper.ws.service;
 import org.springframework.stereotype.Component;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
-import com.inmapper.ws.model.MobilePosition;
-import com.inmapper.ws.model.RoomLocation;
+import com.inmapper.ws.model.domain.UserLocation;
+import com.inmapper.ws.model.to.MobilePositionTo;
 
 /**
  * Algorithm in charge of converting mobile sensor information into relative indoor coordinates.
@@ -19,7 +19,7 @@ public class MappingAlgorithm {
     public MappingAlgorithm() {
     }
     
-    public RoomLocation decodePosition(MobilePosition position) throws InvalidMobilePositionException {
+    public UserLocation decodePosition(MobilePositionTo position) throws InvalidMobilePositionException {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,11 +1,9 @@
 package com.inmapper.ws.service;
 
-import java.util.List;
-
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.MobilePosition;
-import com.inmapper.ws.model.RoomLocation;
+import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.RoomMappingTo;
 
 /**
  * Service orchestrating mobile sensor data conversion and persistence.
@@ -14,10 +12,8 @@ import com.inmapper.ws.model.RoomLocation;
  */
 public interface MappingService {
     
-    Long handlePosition(MobilePosition position) throws InvalidMobilePositionException;
+    String handlePosition(MobilePositionTo position) throws InvalidMobilePositionException;
     
-    RoomLocation retrieveLocation(Long id) throws ResourceNotFoundException;
-    
-    List<RoomLocation> retrieveRoomLocations(String roomId) throws ResourceNotFoundException;
+    RoomMappingTo retrieveRoomLocations(String roomId) throws ResourceNotFoundException;
     
 }

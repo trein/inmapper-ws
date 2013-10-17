@@ -1,7 +1,5 @@
 package com.inmapper.ws.service;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -13,13 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.MobilePosition;
-import com.inmapper.ws.model.RoomLocation;
+import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.RoomMappingTo;
 
 @Service
-public class MappingFacadeImpl implements MappingFacade {
+public class MappingRESTFacadeImpl implements MappingRESTFacade {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(MappingFacadeImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingRESTFacadeImpl.class);
     
     @Context
     private HttpServletRequest request;
@@ -43,26 +41,18 @@ public class MappingFacadeImpl implements MappingFacade {
     }
     
     @Override
-    public Response positions(MobilePosition position) throws InvalidMobilePositionException {
+    public Response positions(MobilePositionTo position) throws InvalidMobilePositionException {
         LOGGER.debug("POST position received with {}", position); //$NON-NLS-1$
-        Long id = this.service.handlePosition(position);
+        String id = this.service.handlePosition(position);
         
         return Response.ok(id).build();
     }
     
     @Override
-    public Response locations(Long id) throws ResourceNotFoundException {
-        LOGGER.debug("GET location received with id {}", id); //$NON-NLS-1$
-        RoomLocation location = this.service.retrieveLocation(id);
-        
-        return Response.ok(location).build();
-    }
-    
-    @Override
-    public Response roomLocations(String roomId) throws ResourceNotFoundException {
+    public Response mappings(String roomId) throws ResourceNotFoundException {
         LOGGER.debug("GET room locations received with room id {}", roomId); //$NON-NLS-1$
-        List<RoomLocation> locations = this.service.retrieveRoomLocations(roomId);
+        RoomMappingTo mapping = this.service.retrieveRoomLocations(roomId);
         
-        return Response.ok(locations).build();
+        return Response.ok(mapping).build();
     }
 }
