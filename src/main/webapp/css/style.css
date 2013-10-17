@@ -1,12 +1,6 @@
 body {
     color: #555;
 }
-li {
-    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin-bottom: 10px;
-    font-size: 12px;
-    font-weight: 400;
-}
 h1, h2, h3, h4, h5, h6 {
     font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin-top: 40px;
@@ -15,9 +9,16 @@ h1, h2, h3, h4, h5, h6 {
 ul {
     font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin-bottom: 10px;
+    padding-left: 10px;
     font-size: 12px;
     font-weight: 400;
-    text-align: justify;
+}
+li {
+    font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    font-size: 12px;
+    font-weight: 400;
 }
 p {
     text-align: justify;
@@ -26,4 +27,7 @@ p {
     line-height: 170%;
     font-weight: 400;
     font-family:'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+a.accordion-toggle {
+    font-size: 12px;
 }

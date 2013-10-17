@@ -1,8 +1,13 @@
+// Web Service URL
+URL = "/api/v/{0}/mappings";
+
+// Canvas dimensions
 WIDTH = 720;
 HEIGHT = 440;
 SCALE = 10;
 
-URL = "/api/v/{0}/mappings";
+// Instance variables
+mappings = {}
 
 function getContext() {
     var canvas = document.getElementById('map_canvas');
@@ -10,9 +15,62 @@ function getContext() {
 }
 
 $(function() {
-    drawFrame();
     refreshLocations();
 });
+
+function refreshLocations() {
+    var callback = function(data) {
+        normalizeData(data);
+        assembleMobileData(data);
+        mappings = data;
+
+        filterLocations();        
+    };
+    getRoomLocations(callback);
+}
+
+function filterLocations() {
+    var filter = getUncheckedSessions();
+
+    eraseFrame();
+    drawLocations(mappings, filter);
+}
+
+function getUncheckedSessions() {
+    var sessionsToBeFiltered = [];
+
+    $(".session-check").each(function() {
+        var checkbox = $(this);
+
+        if (!checkbox.prop("checked")) {
+            sessionsToBeFiltered.push(checkbox.val());
+        }
+    });
+    return sessionsToBeFiltered;
+}
+
+function getRoomLocations(callback) {
+    var roomId = $("#room_id").val();
+    var roomUrl = URL.format(roomId);
+    
+    $.getJSON(roomUrl, function(data) { callback(data); });
+}
+
+function eraseFrame() {
+    var canvas = document.getElementById('map_canvas');
+    var context = getContext();
+    // Store the current transformation matrix
+    context.save();
+
+    // Use the identity matrix while clearing the canvas
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Restore the transform
+    context.restore();
+
+    drawFrame();
+}
 
 function drawFrame() {
     $("#map_canvas").attr("width", WIDTH).attr("height", HEIGHT);
@@ -29,10 +87,10 @@ function drawFrame() {
     context.lineTo(0, 0);
     context.stroke();
     
-    eraseFrame();
+    drawSnaps();
 }
 
-function eraseFrame() {
+function drawSnaps() {
     var context = getContext();
     var radius = 1;
 
@@ -48,94 +106,95 @@ function eraseFrame() {
     }
 }
 
-function drawLocations(data) {
+function drawLocations(data, sessionIdFilters) {
+    var sessionIdFilters = sessionIdFilters || []
     var context = getContext();
     var radius = 1;
-    
-    for (sessionId in data['userMappings']) {
-        var userSession = data['userMappings'][sessionId];
 
-        for (locationsIndex in userSession) {
-            var value = userSession[locationsIndex];
+    loopOver(data, function(metadata) {
+        var value = metadata["location"];
+        var shouldBePresented = $.inArray(metadata["sessionId"], sessionIdFilters) == -1;
 
+        if (shouldBePresented) {
             context.beginPath();
             context.lineWidth = 5;
             context.strokeStyle = 'gray';
             context.arc(value.x * SCALE, value.y * SCALE, radius, 0, 2 * Math.PI, true);
             context.stroke();
         }
+    });
+}
+
+function loopOver(data, callback) {
+    for (sessionId in data['userMappings']) {
+        var session = data['userMappings'][sessionId];
+
+        for (locationIndex in session) {
+            var metadata = { "sessionId" : sessionId, "session" : session, "location" : session[locationIndex] };
+
+            callback(metadata);
+        }
     }
 }
 
-function getRoomLocations(callback) {
-    var roomId = $("#room_id").val();
-    var roomUrl = URL.format(roomId);
+function assembleMobileData(data) {
+    var pattern = "<li id='{0}'>Id: {0} <br> Mobile id: {1} <br> Coordinates: ({2}, {3})</li>"
     
-    $.getJSON(roomUrl, function(data) { callback(data); });
-}
+    console.log("Received data: " + data);
 
-function refreshLocations() {
-    var callback = function(data) {
-        var maxX = 0;
-        var maxY = 0;
-        var pattern = "<li id='{0}'>Id: {0} - Mobile id: {1} - Coordinates: ({2}, {3})</li>"
-        
-        console.log("Received data: " + data);
+    $("#accordion").empty();
+      
+    for (sessionId in data['userMappings']) {
+        var userSession = data['userMappings'][sessionId];
+        var userTag = $(dumpHTML().format(sessionId));
 
-        $("#accordion").empty();
-          
-        for (sessionId in data['userMappings']) {
-            var userSession = data['userMappings'][sessionId];
-            var userTag = $(dumpHTML().format(sessionId));
+        console.log("Received user session: " + sessionId);
 
-            console.log("Received user session: " + sessionId);
+        for (locationsIndex in userSession) {
+            var value = userSession[locationsIndex];
+            var tagItem = pattern.format(value.roomId, value.mobileId, value.x, value.y);
+            
+            console.log("Received value: " + value);
 
-            for (locationsIndex in userSession) {
-                var value = userSession[locationsIndex];
-                var tagItem = pattern.format(value.roomId, value.mobileId, value.x, value.y);
-                
-                maxX = (value.x > maxX) ? value.x : maxX;
-                maxY = (value.y > maxY) ? value.y : maxY;
-
-                console.log("Received value: " + value);
-
-                $('.data', userTag).append(tagItem);
-            }
-            $("#accordion").append(userTag);
+            $('.data', userTag).append(tagItem);
         }
-
-        eraseFrame();
-        normalizeData(data, maxX, maxY);
-        drawLocations(data);
-    };
-
-    getRoomLocations(callback);
+        $("#accordion").append(userTag);
+    }
 }
 
-function normalizeData(data, maxX, maxY) {
+function normalizeData(data) {
+    var maxX = 0;
+    var maxY = 0;
+
+    loopOver(data, function(metadata) {
+        var value = metadata["location"];
+
+        maxX = (value.x > maxX) ? value.x : maxX;
+        maxY = (value.y > maxY) ? value.y : maxY;
+    });
+
     var xFactor = (maxX * SCALE > WIDTH) ? WIDTH / maxX / SCALE : 1;
     var yFactor = (maxY * SCALE > HEIGHT) ? HEIGHT / maxY / SCALE : 1;
 
     console.log("X scaling factor value: " + xFactor + " for max " + maxX);
     console.log("Y scaling factor value: " + yFactor + " for max " + maxY);
 
-    var toFunction = function(value) {
+    loopOver(data, function(metadata) {
+        var value = metadata["location"];
+
         value.x = value.x * xFactor;
         value.y = value.y * yFactor;
-    };
-
-    for (sessionId in data['userMappings']) {
-        var userSession = data['userMappings'][sessionId];
-
-        userSession.map(toFunction);
-    }
+    });
 }
 
 function dumpHTML() {
     return '<div class="panel panel-default">'
             + '    <div class="panel-heading">'
             + '        <h4 class="panel-title">'
+            + '            <div class="checkbox">'
             + '            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{0}">Mobile Id: {0}</a>'
+            + '                    <input class="session-check" type="checkbox" value="{0}" checked>'
+            + '            </div>'
             + '        </h4>'
             + '    </div>'
             + '    <div id="collapse{0}" class="panel-collapse collapse">'

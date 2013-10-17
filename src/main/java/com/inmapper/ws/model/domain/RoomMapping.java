@@ -70,6 +70,10 @@ public class RoomMapping {
         this.sessions.put(session.getMobileId(), session);
     }
     
+    public void removeAllSessions() {
+        this.sessions.clear();
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o instanceof RoomMapping) {

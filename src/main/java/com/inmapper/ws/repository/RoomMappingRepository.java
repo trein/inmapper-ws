@@ -2,6 +2,7 @@ package com.inmapper.ws.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inmapper.ws.model.domain.RoomMapping;
 
@@ -14,6 +15,7 @@ import com.inmapper.ws.model.domain.RoomMapping;
 @Repository
 public interface RoomMappingRepository extends JpaRepository<RoomMapping, Long> {
     
+    @Transactional
     RoomMapping findByRoomId(String roomId);
     
 }
