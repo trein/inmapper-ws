@@ -5,17 +5,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.base.Objects;
 
 @XmlRootElement
-public class UserPointTo {
+public class RoomPointTo {
     
     private String roomId;
     private String mobileId;
     private Double x;
     private Double y;
     
-    UserPointTo() {
+    RoomPointTo() {
     }
     
-    public UserPointTo(String roomId, String mobileId, Double x, Double y) {
+    public RoomPointTo(String roomId, String mobileId, Double x, Double y) {
         this.roomId = roomId;
         this.mobileId = mobileId;
         this.x = x;
@@ -46,8 +46,8 @@ public class UserPointTo {
     
     @Override
     public boolean equals(Object o) {
-        if (o instanceof UserPointTo) {
-            UserPointTo other = (UserPointTo) o;
+        if (o instanceof RoomPointTo) {
+            RoomPointTo other = (RoomPointTo) o;
             
             return Objects.equal(this.roomId, other.roomId) && Objects.equal(this.mobileId, other.mobileId)
                     && Objects.equal(this.x, other.x) && Objects.equal(this.y, other.y);

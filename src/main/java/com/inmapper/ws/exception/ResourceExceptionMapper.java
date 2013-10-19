@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 
 @Provider
 @Component
-public class ResourceNotFoundExceptionMapper implements ExceptionMapper<ResourceNotFoundException> {
+public class ResourceExceptionMapper implements ExceptionMapper<Exception> {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceExceptionMapper.class);
     
     @Override
-    public Response toResponse(ResourceNotFoundException exception) {
-        String response = exception.getMessage();
+    public Response toResponse(Exception exception) {
+        String response = "Invalid request";
         
         logException(exception);
         
@@ -29,7 +29,7 @@ public class ResourceNotFoundExceptionMapper implements ExceptionMapper<Resource
         String exceptionMessage = exception.getMessage();
         String exceptionClass = exception.getClass().getName();
         
-        LOGGER.warn("Security exception [{}] captured: {}", exceptionClass, exceptionMessage, exception);
+        LOGGER.warn("Exception [{}] captured: {}", exceptionClass, exceptionMessage);
     }
     
 }

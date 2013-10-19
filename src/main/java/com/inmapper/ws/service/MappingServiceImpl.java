@@ -13,9 +13,9 @@ import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.domain.RoomMapping;
 import com.inmapper.ws.model.domain.UserLocation;
 import com.inmapper.ws.model.domain.UserSession;
-import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.MobileSessionTo;
 import com.inmapper.ws.model.to.RoomMappingTo;
-import com.inmapper.ws.model.to.UserPointTo;
+import com.inmapper.ws.model.to.RoomPointTo;
 import com.inmapper.ws.repository.RoomMappingRepository;
 
 /**
@@ -40,14 +40,16 @@ public class MappingServiceImpl implements MappingService {
     
     @Override
     @Transactional(readOnly = false)
-    public String handlePosition(MobilePositionTo position) throws InvalidMobilePositionException {
+    public String handlePosition(MobileSessionTo position) throws InvalidMobilePositionException {
+        validatePosition(position);
+        
         UserLocation location = this.algorithm.decodePosition(position);
         RoomMapping mapping = this.repository.findByRoomId(position.getRoomId());
         
         if (mapping == null) {
             mapping = new RoomMapping(position.getRoomId());
         }
-        mapping.appendToSession(position.getMobileId(), location);
+        mapping.appendToSession(position.getToken(), location);
         
         this.repository.save(mapping);
         
@@ -56,10 +58,16 @@ public class MappingServiceImpl implements MappingService {
         return mapping.getRoomId();
     }
     
+    private void validatePosition(MobileSessionTo position) throws InvalidMobilePositionException {
+        if (!position.isValid()) {
+            throw new InvalidMobilePositionException("Invalid position received");
+        }
+    }
+    
     @Override
     public RoomMappingTo retrieveRoomLocations(String roomId) throws ResourceNotFoundException {
         RoomMapping mapping = this.repository.findByRoomId(roomId);
-        Multimap<String, UserPointTo> mappings = ArrayListMultimap.create();
+        Multimap<String, RoomPointTo> mappings = ArrayListMultimap.create();
         
         if (mapping == null) {
             throw new ResourceNotFoundException(roomId);
@@ -68,7 +76,7 @@ public class MappingServiceImpl implements MappingService {
         for (UserSession userSession : mapping.getSessions()) {
             for (UserLocation location : userSession.getLocations()) {
                 String mobileId = userSession.getMobileId();
-                UserPointTo point = new UserPointTo(roomId, mobileId, location.getX(), location.getY());
+                RoomPointTo point = new RoomPointTo(roomId, mobileId, location.getX(), location.getY());
                 
                 mappings.put(mobileId, point);
             }

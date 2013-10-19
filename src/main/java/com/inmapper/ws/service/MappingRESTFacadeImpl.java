@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.MobileSessionTo;
 import com.inmapper.ws.model.to.RoomMappingTo;
 
 @Service
@@ -31,28 +31,30 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     @Override
     public Response health() {
         LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
-        
         return Response.ok("Health check: Alive").build();
     }
     
     @Override
-    public Response identification() {
-        return Response.ok(this.generator.next()).build();
+    public Response token() {
+        String token = this.generator.next();
+        
+        LOGGER.debug("GET token received. Replying {}", token); //$NON-NLS-1$
+        return Response.ok(String.format("{ \"token\": \"%s\" }", token)).build();
     }
     
     @Override
-    public Response positions(MobilePositionTo position) throws InvalidMobilePositionException {
-        LOGGER.debug("POST position received with {}", position); //$NON-NLS-1$
+    public Response positions(MobileSessionTo position) throws InvalidMobilePositionException {
         String id = this.service.handlePosition(position);
         
+        LOGGER.debug("POST position received with {}", position); //$NON-NLS-1$
         return Response.ok(id).build();
     }
     
     @Override
     public Response mappings(String roomId) throws ResourceNotFoundException {
-        LOGGER.debug("GET room locations received with room id {}", roomId); //$NON-NLS-1$
         RoomMappingTo mapping = this.service.retrieveRoomLocations(roomId);
         
+        LOGGER.debug("GET room locations received with room id {}", roomId); //$NON-NLS-1$
         return Response.ok(mapping).build();
     }
 }

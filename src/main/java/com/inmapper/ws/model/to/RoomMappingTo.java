@@ -10,16 +10,16 @@ import com.google.common.base.Objects;
 @XmlRootElement
 public class RoomMappingTo {
     
-    private Map<String, Collection<UserPointTo>> userMappings;
+    private Map<String, Collection<RoomPointTo>> userMappings;
     
     RoomMappingTo() {
     }
     
-    public RoomMappingTo(Map<String, Collection<UserPointTo>> map) {
+    public RoomMappingTo(Map<String, Collection<RoomPointTo>> map) {
         this.userMappings = map;
     }
     
-    public Map<String, Collection<UserPointTo>> getUserMappings() {
+    public Map<String, Collection<RoomPointTo>> getUserMappings() {
         return this.userMappings;
     }
     

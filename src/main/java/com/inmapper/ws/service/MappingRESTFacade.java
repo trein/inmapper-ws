@@ -13,7 +13,7 @@ import org.jboss.resteasy.annotations.GZIP;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.MobileSessionTo;
 
 @Path("/v")
 public interface MappingRESTFacade {
@@ -25,17 +25,17 @@ public interface MappingRESTFacade {
     Response health();
     
     @GET
-    @Path("/identification")
+    @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
-    Response identification();
+    Response token();
     
     @POST
     @Path("/positions")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
-    Response positions(MobilePositionTo position) throws InvalidMobilePositionException;
+    Response positions(MobileSessionTo position) throws InvalidMobilePositionException;
     
     @GET
     @Path("{room_id}/mappings")

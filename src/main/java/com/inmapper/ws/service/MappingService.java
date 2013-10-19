@@ -2,7 +2,7 @@ package com.inmapper.ws.service;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
-import com.inmapper.ws.model.to.MobilePositionTo;
+import com.inmapper.ws.model.to.MobileSessionTo;
 import com.inmapper.ws.model.to.RoomMappingTo;
 
 /**
@@ -12,7 +12,7 @@ import com.inmapper.ws.model.to.RoomMappingTo;
  */
 public interface MappingService {
     
-    String handlePosition(MobilePositionTo position) throws InvalidMobilePositionException;
+    String handlePosition(MobileSessionTo position) throws InvalidMobilePositionException;
     
     RoomMappingTo retrieveRoomLocations(String roomId) throws ResourceNotFoundException;
     
