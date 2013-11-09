@@ -58,4 +58,10 @@ public class UserLocation {
     public int hashCode() {
         return Objects.hashCode(this.id, this.x, this.y);
     }
+    
+    @SuppressWarnings("boxing")
+    public static UserLocation zeroValue() {
+        return new UserLocation(0.0, 0.0);
+    }
+    
 }

@@ -59,10 +59,10 @@ public class SampleRoomLocations {
             UserLocation location3 = new UserLocation((initialPos * 3) + createBias(), initialPos + index + createBias());
             UserLocation location4 = new UserLocation((initialPos * 3) + createBias(), initialPos + index + createBias());
             
-            session.addLocation(location1);
-            session.addLocation(location2);
-            session.addLocation(location3);
-            session.addLocation(location4);
+            session.addLocations(location1);
+            session.addLocations(location2);
+            session.addLocations(location3);
+            session.addLocations(location4);
             
             UserLocation location5 = new UserLocation(initialPos + index + createBias(), (initialPos * 1) + createBias());
             UserLocation location6 = new UserLocation(initialPos + index + createBias(), (initialPos * 2) + createBias());
@@ -70,11 +70,11 @@ public class SampleRoomLocations {
             UserLocation location8 = new UserLocation(initialPos + index + createBias(), (initialPos * 4) + createBias());
             UserLocation location9 = new UserLocation(initialPos + index + createBias(), (initialPos * 5) + createBias());
             
-            session.addLocation(location5);
-            session.addLocation(location6);
-            session.addLocation(location7);
-            session.addLocation(location8);
-            session.addLocation(location9);
+            session.addLocations(location5);
+            session.addLocations(location6);
+            session.addLocations(location7);
+            session.addLocations(location8);
+            session.addLocations(location9);
         }
         return session;
     }
@@ -92,10 +92,10 @@ public class SampleRoomLocations {
             UserLocation location3 = new UserLocation(initialPos + (step * 2) + createBias(), initialPos + index + createBias());
             UserLocation location4 = new UserLocation(initialPos + (step * 3) + createBias(), initialPos + index + createBias());
             
-            session.addLocation(location1);
-            session.addLocation(location2);
-            session.addLocation(location3);
-            session.addLocation(location4);
+            session.addLocations(location1);
+            session.addLocations(location2);
+            session.addLocations(location3);
+            session.addLocations(location4);
             
             UserLocation location5 = new UserLocation(initialPos + (step * 4) + createBias(), initialPos + index + createBias());
             UserLocation location6 = new UserLocation(initialPos + (step * 5) + createBias(), initialPos + index + createBias());
@@ -103,11 +103,11 @@ public class SampleRoomLocations {
             UserLocation location8 = new UserLocation(initialPos + (step * 7) + createBias(), initialPos + index + createBias());
             UserLocation location9 = new UserLocation(initialPos + (step * 8) + createBias(), initialPos + index + createBias());
             
-            session.addLocation(location5);
-            session.addLocation(location6);
-            session.addLocation(location7);
-            session.addLocation(location8);
-            session.addLocation(location9);
+            session.addLocations(location5);
+            session.addLocations(location6);
+            session.addLocations(location7);
+            session.addLocations(location8);
+            session.addLocations(location9);
         }
         return session;
     }
@@ -126,10 +126,10 @@ public class SampleRoomLocations {
             UserLocation location4 = new UserLocation(initialXPos + index + createBias(), initialYPos + (step * 3) + createBias());
             UserLocation location5 = new UserLocation(initialXPos + index + createBias(), initialYPos + (step * 4) + createBias());
             
-            session.addLocation(location2);
-            session.addLocation(location3);
-            session.addLocation(location4);
-            session.addLocation(location5);
+            session.addLocations(location2);
+            session.addLocations(location3);
+            session.addLocations(location4);
+            session.addLocations(location5);
         }
         return session;
     }

@@ -1,5 +1,7 @@
 package com.inmapper.ws.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.inmapper.ws.algorithm.MappingAlgorithm;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.domain.RoomMapping;
@@ -43,19 +46,24 @@ public class MappingServiceImpl implements MappingService {
     public String handlePosition(MobileSessionTo position) throws InvalidMobilePositionException {
         validatePosition(position);
         
-        UserLocation location = this.algorithm.decodePosition(position);
+        List<UserLocation> locations = this.algorithm.decodePosition(position);
+        RoomMapping mapping = getOrCreateMapping(position);
+        mapping.appendSession(position.getToken(), locations);
+        
+        this.repository.save(mapping);
+        
+        LOGGER.debug("Saved new location for room {} as {}", position.getRoomId(), locations);
+        
+        return mapping.getRoomId();
+    }
+
+    private RoomMapping getOrCreateMapping(MobileSessionTo position) {
         RoomMapping mapping = this.repository.findByRoomId(position.getRoomId());
         
         if (mapping == null) {
             mapping = new RoomMapping(position.getRoomId());
         }
-        mapping.appendToSession(position.getToken(), location);
-        
-        this.repository.save(mapping);
-        
-        LOGGER.debug("Saved new location for room {} as {}", position.getRoomId(), location);
-        
-        return mapping.getRoomId();
+        return mapping;
     }
     
     private void validatePosition(MobileSessionTo position) throws InvalidMobilePositionException {

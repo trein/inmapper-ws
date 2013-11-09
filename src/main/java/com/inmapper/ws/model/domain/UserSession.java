@@ -1,5 +1,6 @@
 package com.inmapper.ws.model.domain;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -39,7 +40,7 @@ public class UserSession {
     UserSession() {
     }
     
-    UserSession(RoomMapping roomMapping, String mobileId) {
+    public UserSession(RoomMapping roomMapping, String mobileId) {
         this.roomMapping = roomMapping;
         this.mobileId = mobileId;
         this.locations = Lists.newArrayList();
@@ -53,12 +54,12 @@ public class UserSession {
         return this.mobileId;
     }
     
-    public Collection<UserLocation> getLocations() {
-        return Collections.unmodifiableCollection(this.locations);
+    public void addLocations(UserLocation... location) {
+        this.locations.addAll(Arrays.asList(location));
     }
     
-    public void addLocation(UserLocation location) {
-        this.locations.add(location);
+    public Collection<UserLocation> getLocations() {
+        return Collections.unmodifiableCollection(this.locations);
     }
     
     @Override
@@ -76,4 +77,5 @@ public class UserSession {
     public int hashCode() {
         return Objects.hashCode(this.id, this.roomMapping.getId(), this.mobileId, this.locations);
     }
+    
 }

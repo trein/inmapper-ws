@@ -32,7 +32,7 @@ public class RoomMappingRepositoryIT extends BaseRepositoryIT<RoomMappingReposit
         RoomMapping mapping = new RoomMapping("hall");
         UserSession userSession = mapping.getSession("6c637ce7-23ca-4f95-bb44-0419090d0337");
         
-        userSession.addLocation(new UserLocation(1.0, 2.0));
+        userSession.addLocations(new UserLocation(1.0, 2.0));
         
         // when
         getRepository().saveAndFlush(mapping);
@@ -53,13 +53,13 @@ public class RoomMappingRepositoryIT extends BaseRepositoryIT<RoomMappingReposit
         UserLocation location2 = new UserLocation(9.0, 6.0);
         
         RoomMapping mapping = new RoomMapping("hall");
-        mapping.getSession(mobileId).addLocation(location1);
+        mapping.getSession(mobileId).addLocations(location1);
         getRepository().saveAndFlush(mapping);
         Collection<UserLocation> expectedLocations = mapping.getSession(mobileId).getLocations();
         
         // when
         RoomMapping foundMapping = getRepository().findOne(mapping.getId());
-        foundMapping.getSession(mobileId).addLocation(location2);
+        foundMapping.getSession(mobileId).addLocations(location2);
         getRepository().save(foundMapping);
         
         RoomMapping propagatedPosition = getRepository().findOne(mapping.getId());

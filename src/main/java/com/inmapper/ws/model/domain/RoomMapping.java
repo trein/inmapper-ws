@@ -2,6 +2,7 @@ package com.inmapper.ws.model.domain;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -53,10 +54,6 @@ public class RoomMapping {
         return Collections.unmodifiableCollection(this.sessions.values());
     }
     
-    public void appendToSession(String mobileId, UserLocation location) {
-        getSession(mobileId).addLocation(location);
-    }
-    
     public UserSession getSession(String mobileId) {
         UserSession userSession = this.sessions.get(mobileId);
         
@@ -64,6 +61,10 @@ public class RoomMapping {
             userSession = new UserSession(this, mobileId);
         }
         return userSession;
+    }
+    
+    public void appendSession(String token, List<UserLocation> locations) {
+        getSession(token).addLocations(locations.toArray(new UserLocation[0]));
     }
     
     public void addSession(UserSession session) {
