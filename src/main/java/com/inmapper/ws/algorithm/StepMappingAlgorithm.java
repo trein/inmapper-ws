@@ -1,6 +1,5 @@
 package com.inmapper.ws.algorithm;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class StepMappingAlgorithm implements MappingAlgorithm {
     
     @Override
     public List<UserLocation> decodePosition(MobileSessionTo session) throws InvalidMobilePositionException {
-        Collection<MobilePointTo> filteredPositions = this.filter.filter(session.getPositions());
+        List<MobilePointTo> filteredPositions = this.filter.filter(session.getPositions());
         List<MobilePointTo> stepsPoints = this.stepDetector.detectSteps(filteredPositions);
         
         return this.converter.convert(session, stepsPoints);

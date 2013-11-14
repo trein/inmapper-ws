@@ -1,6 +1,7 @@
 package com.inmapper.ws.algorithm;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -35,8 +36,8 @@ public class LowPassFilter {
      * @param values collection of numbers that will be modified in place.
      * @return filtered values.
      */
-    public Collection<MobilePointTo> filter(Collection<MobilePointTo> points) {
-        Collection<MobilePointTo> filteredPoints = Lists.newArrayList();
+    public List<MobilePointTo> filter(Collection<MobilePointTo> points) {
+        List<MobilePointTo> filteredPoints = Lists.newArrayList();
         MobilePointTo[] values = (MobilePointTo[]) points.toArray();
         MobilePointTo previousPoint = values[0];
         

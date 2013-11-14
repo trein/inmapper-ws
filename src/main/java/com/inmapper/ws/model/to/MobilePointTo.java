@@ -1,5 +1,6 @@
 package com.inmapper.ws.model.to;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,21 +41,18 @@ public class MobilePointTo {
         return this.heading;
     }
     
-    @SuppressWarnings("boxing")
-    public static MobilePointTo computeAverage(List<MobilePointTo> points) {
-        double sumX = 0;
-        double sumY = 0;
-        double sumZ = 0;
-        double sumHeading = 0;
-        int samples = points.size();
+    /*
+     * Whatever sensors you use, the X, Y, Z that you're measuring will depend on the orientation of
+     * the device. However, for detecting the activities that you mention, the result can't depend
+     * on e.g. whether the user is holding the device in a portrait or landscape position, or
+     * whether the device is flat or vertical, so the individual values of X, Y and Z won't be any
+     * use. Instead you'll have to look at the length of the vector, i.e. sqrt(X*X+Y*Y+Z*Z) which is
+     * independent of the device orientation.
+     */
+    public Double getVariation() {
+        return Double.valueOf(Math.sqrt((this.x.doubleValue() * this.x.doubleValue())
+                + (this.y.doubleValue() * this.y.doubleValue()) + (this.z.doubleValue() * this.z.doubleValue())));
         
-        for (MobilePointTo point : points) {
-            sumX += point.x.doubleValue();
-            sumY += point.y.doubleValue();
-            sumZ += point.z.doubleValue();
-            sumHeading += point.heading.doubleValue();
-        }
-        return new MobilePointTo(sumX / samples, sumY / samples, sumZ / samples, sumHeading / samples);
     }
     
     @Override
@@ -77,6 +75,24 @@ public class MobilePointTo {
     @Override
     public int hashCode() {
         return Objects.hashCode(this.x, this.y, this.z, this.heading);
+    }
+    
+    public static Double computeAverage(Collection<MobilePointTo> points) {
+        Double average = Double.valueOf(0);
+        double variationSum = 0;
+        int examples = points.size();
+        
+        if (!points.isEmpty()) {
+            for (MobilePointTo point : points) {
+                variationSum += point.getVariation().doubleValue();
+            }
+            average = Double.valueOf(variationSum / examples);
+        }
+        return average;
+    }
+    
+    public static MobilePointTo getMedian(List<MobilePointTo> window) {
+        return window.get(window.size() / 2);
     }
     
 }
