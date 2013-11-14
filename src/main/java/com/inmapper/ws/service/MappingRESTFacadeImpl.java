@@ -44,10 +44,10 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     
     @Override
     public Response positions(MobileSessionTo position) throws InvalidMobilePositionException {
-        String id = this.service.handlePosition(position);
+        String roomId = this.service.handlePosition(position);
         
         LOGGER.debug("POST position received with {}", position); //$NON-NLS-1$
-        return Response.ok(id).build();
+        return Response.ok(String.format("{ \"room\": \"%s\" }", roomId)).build();
     }
     
     @Override
