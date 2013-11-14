@@ -1,0 +1,54 @@
+package com.inmapper.ws.service;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.ws.rs.core.MediaType;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.jboss.resteasy.plugins.providers.jackson.ResteasyJacksonProvider;
+import org.springframework.stereotype.Component;
+
+import com.inmapper.ws.model.to.MobileSessionTo;
+
+@Component
+public class SessionAuditor {
+    
+    private static final String AUDIT_DIR_PATTERN = "./audit/%s";
+    private final ResteasyJacksonProvider jacksonProvider;
+    
+    public SessionAuditor() {
+        this.jacksonProvider = new ResteasyJacksonProvider();
+    }
+    
+    public void saveSession(MobileSessionTo session) {
+        ObjectMapper mapper = this.jacksonProvider.locateMapper(MobileSessionTo.class, MediaType.APPLICATION_JSON_TYPE);
+        
+        try {
+            mapper.writeValue(new File(getAuditFilename(session.getToken())), session);
+        } catch (JsonGenerationException e) {
+        } catch (JsonMappingException e) {
+        } catch (IOException e) {
+        }
+    }
+    
+    public MobileSessionTo loadSession(String token) {
+        ObjectMapper mapper = this.jacksonProvider.locateMapper(MobileSessionTo.class, MediaType.APPLICATION_JSON_TYPE);
+        MobileSessionTo value = null;
+        
+        try {
+            value = mapper.readValue(new File(getAuditFilename(token)), MobileSessionTo.class);
+        } catch (JsonParseException e) {
+        } catch (JsonMappingException e) {
+        } catch (IOException e) {
+        }
+        return value;
+    }
+    
+    private String getAuditFilename(String token) {
+        return String.format(AUDIT_DIR_PATTERN, token);
+    }
+}

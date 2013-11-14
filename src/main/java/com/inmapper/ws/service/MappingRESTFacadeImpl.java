@@ -28,6 +28,9 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     @Autowired
     private MappingService service;
     
+    @Autowired
+    private SessionAuditor auditor;
+    
     @Override
     public Response health() {
         LOGGER.debug("Health check received from {}", this.request.getRemoteHost()); //$NON-NLS-1$
@@ -43,10 +46,12 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     }
     
     @Override
-    public Response positions(MobileSessionTo position) throws InvalidMobilePositionException {
-        String roomId = this.service.handlePosition(position);
+    public Response positions(MobileSessionTo session) throws InvalidMobilePositionException {
+        this.auditor.saveSession(session);
         
-        LOGGER.debug("POST position received with {}", position); //$NON-NLS-1$
+        String roomId = this.service.handlePosition(session);
+        
+        LOGGER.debug("POST session received with {}", session); //$NON-NLS-1$
         return Response.ok(String.format("{ \"room\": \"%s\" }", roomId)).build();
     }
     
