@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.common.base.Objects;
 
 @XmlRootElement
@@ -49,6 +51,7 @@ public class MobilePointTo {
      * use. Instead you'll have to look at the length of the vector, i.e. sqrt(X*X+Y*Y+Z*Z) which is
      * independent of the device orientation.
      */
+    @JsonIgnore
     public Double getVariation() {
         return Double.valueOf(Math.sqrt((this.x.doubleValue() * this.x.doubleValue())
                 + (this.y.doubleValue() * this.y.doubleValue()) + (this.z.doubleValue() * this.z.doubleValue())));

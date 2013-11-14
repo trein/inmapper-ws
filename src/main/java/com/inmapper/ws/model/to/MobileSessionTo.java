@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
@@ -41,6 +43,7 @@ public class MobileSessionTo {
         return this.positions;
     }
     
+    @JsonIgnore
     public boolean isValid() {
         return !Strings.isNullOrEmpty(this.token) && !Strings.isNullOrEmpty(this.roomId)
                 && !Strings.isNullOrEmpty(this.userHeight) && (this.positions != null) && !this.positions.isEmpty();

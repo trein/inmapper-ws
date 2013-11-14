@@ -18,17 +18,10 @@ public class LowPassFilter {
     
     private static final int DEFAULT_SMOOTHING = 60;
     
-    private final int smoothing;
-    
-    /**
-     * Filter creation.
-     * 
-     * @param smoothing the strength of the smoothing filter; 1=no change, larger values smoothes
-     *        more.
+    /*
+     * Smoothing the strength of the smoothing filter; 1=no change, larger values smoothes more.
      */
-    public LowPassFilter(int smoothing) {
-        this.smoothing = smoothing <= 0 ? DEFAULT_SMOOTHING : smoothing;
-    }
+    private final int smoothing = DEFAULT_SMOOTHING;
     
     /**
      * Perform values filtering according to smoothing chosen.
@@ -38,7 +31,7 @@ public class LowPassFilter {
      */
     public List<MobilePointTo> filter(Collection<MobilePointTo> points) {
         List<MobilePointTo> filteredPoints = Lists.newArrayList();
-        MobilePointTo[] values = (MobilePointTo[]) points.toArray();
+        MobilePointTo[] values = points.toArray(new MobilePointTo[0]);
         MobilePointTo previousPoint = values[0];
         
         for (int i = 1; i < values.length; ++i) {

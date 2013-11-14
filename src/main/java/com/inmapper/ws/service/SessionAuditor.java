@@ -10,12 +10,16 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJacksonProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.inmapper.ws.model.to.MobileSessionTo;
 
 @Component
 public class SessionAuditor {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionAuditor.class);
     
     private static final String AUDIT_DIR_PATTERN = "./audit/%s";
     private final ResteasyJacksonProvider jacksonProvider;
@@ -30,8 +34,11 @@ public class SessionAuditor {
         try {
             mapper.writeValue(new File(getAuditFilename(session.getToken())), session);
         } catch (JsonGenerationException e) {
+            LOGGER.error("Error saving session object as JSON in a file", e);
         } catch (JsonMappingException e) {
+            LOGGER.error("Error saving session object as JSON in a file", e);
         } catch (IOException e) {
+            LOGGER.error("Error saving session object as JSON in a file", e);
         }
     }
     
@@ -42,8 +49,11 @@ public class SessionAuditor {
         try {
             value = mapper.readValue(new File(getAuditFilename(token)), MobileSessionTo.class);
         } catch (JsonParseException e) {
+            LOGGER.error("Error loading session object as JSON in a file", e);
         } catch (JsonMappingException e) {
+            LOGGER.error("Error loading session object as JSON in a file", e);
         } catch (IOException e) {
+            LOGGER.error("Error loading session object as JSON in a file", e);
         }
         return value;
     }
