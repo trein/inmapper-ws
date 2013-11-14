@@ -28,8 +28,7 @@ public class StepDetector {
         }
         
         if (!localPoints.isEmpty()) {
-            MobilePointTo average = MobilePointTo.computeAverage(localPoints);
-            filteredPoints.add(average);
+            filteredPoints.add(MobilePointTo.computeAverage(localPoints));
         }
         return filteredPoints;
     }

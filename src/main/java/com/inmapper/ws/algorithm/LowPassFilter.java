@@ -15,6 +15,8 @@ import com.inmapper.ws.model.to.MobilePointTo;
 @Component
 public class LowPassFilter {
     
+    private static final int DEFAULT_SMOOTHING = 60;
+    
     private final int smoothing;
     
     /**
@@ -24,7 +26,7 @@ public class LowPassFilter {
      *        more.
      */
     public LowPassFilter(int smoothing) {
-        this.smoothing = smoothing;
+        this.smoothing = smoothing <= 0 ? DEFAULT_SMOOTHING : smoothing;
     }
     
     /**
