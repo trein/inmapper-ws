@@ -1,6 +1,6 @@
 package com.inmapper.ws.model.to;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -15,12 +15,12 @@ public class MobileSessionTo {
     private String token;
     private String roomId;
     private String userHeight;
-    private Collection<MobilePointTo> positions;
+    private List<MobilePointTo> positions;
     
     MobileSessionTo() {
     }
     
-    public MobileSessionTo(String token, String roomId, String userHeight, Collection<MobilePointTo> positions) {
+    public MobileSessionTo(String token, String roomId, String userHeight, List<MobilePointTo> positions) {
         this.token = token;
         this.roomId = roomId;
         this.userHeight = userHeight;
@@ -39,7 +39,7 @@ public class MobileSessionTo {
         return this.userHeight;
     }
     
-    public Collection<MobilePointTo> getPositions() {
+    public List<MobilePointTo> getPositions() {
         return this.positions;
     }
     

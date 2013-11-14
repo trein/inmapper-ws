@@ -16,7 +16,7 @@ import com.inmapper.ws.model.to.MobilePointTo;
 @Component
 public class LowPassFilter {
     
-    private static final int DEFAULT_SMOOTHING = 60;
+    private static final int DEFAULT_SMOOTHING = 2;
     
     /*
      * Smoothing the strength of the smoothing filter; 1=no change, larger values smoothes more.
@@ -46,7 +46,7 @@ public class LowPassFilter {
         return filteredPoints;
     }
     
-    public Double computeFilter(Double currentValue, Double previousValue) {
+    private Double computeFilter(Double currentValue, Double previousValue) {
         double previous = previousValue.doubleValue();
         double current = currentValue.doubleValue();
         return Double.valueOf(previous + ((current - previous) / this.smoothing));

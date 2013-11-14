@@ -33,6 +33,8 @@
         <org.springframework.data-jpa.version>1.3.2.RELEASE</org.springframework.data-jpa.version>
         <resteasy.version>3.0.4.Final</resteasy.version>
 
+        <charts4j.version>1.3</charts4j.version>
+
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -150,7 +152,7 @@
             </dependency>
 
             <!-- ============================================================ -->
-            <!-- Databse -->
+            <!-- Database -->
             <!-- ============================================================ -->
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -246,6 +248,15 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${org.springframework.data-jpa.version}</version>
+            </dependency>
+
+            <!-- ============================================================ -->
+            <!-- Charts Framework -->
+            <!-- ============================================================ -->
+            <dependency>
+                <groupId>com.googlecode.charts4j</groupId>
+                <artifactId>charts4j</artifactId>
+                <version>${charts4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -385,6 +396,14 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- Charts Framework -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>com.googlecode.charts4j</groupId>
+            <artifactId>charts4j</artifactId>
         </dependency>
     </dependencies>
 </project>

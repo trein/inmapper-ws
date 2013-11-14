@@ -32,7 +32,7 @@ public class SessionAuditor {
         ObjectMapper mapper = this.jacksonProvider.locateMapper(MobileSessionTo.class, MediaType.APPLICATION_JSON_TYPE);
         
         try {
-            mapper.writeValue(new File(getAuditFilename(session.getToken())), session);
+            mapper.writeValue(new File(getAuditFilename(createNewWith(session.getToken()))), session);
         } catch (JsonGenerationException e) {
             LOGGER.error("Error saving session object as JSON in a file", e);
         } catch (JsonMappingException e) {
@@ -58,7 +58,11 @@ public class SessionAuditor {
         return value;
     }
     
-    private String getAuditFilename(String token) {
-        return String.format(AUDIT_DIR_PATTERN, token);
+    private String createNewWith(String token) {
+        return String.format("%s-%s", String.valueOf(System.currentTimeMillis()), token);
+    }
+    
+    private String getAuditFilename(String file) {
+        return String.format(AUDIT_DIR_PATTERN, file);
     }
 }
