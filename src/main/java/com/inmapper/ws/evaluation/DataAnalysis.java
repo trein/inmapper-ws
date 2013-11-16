@@ -25,8 +25,8 @@ public class DataAnalysis {
     private void start() {
         // plotSession(TEST_TOKEN);
         // plotSession(LIVING_TOKEN);
-        plotSession("1384636585169-d38b5cb8-74ca-424e-b0f3-023610a25d3c");
-        plotSession("1384636538413-0e97c580-1559-47cf-8479-0d2cfffcae0b");
+        plotSession("1384640667576-ea94f936-6dfd-489c-a213-0137bb8621c3");
+        // plotSession("1384636538413-0e97c580-1559-47cf-8479-0d2cfffcae0b");
 
     }
 
@@ -43,8 +43,7 @@ public class DataAnalysis {
         // new Plotter("Variations").addAxis(variations, "Raw variations")
         // .addAxis(filteredVariations, "Filtered variations").show();
         new Plotter("Variations").addAxis(filteredVariations, "Filtered variations").show();
-        // new Plotter("Variations").addAxis(variations,
-        // "Raw variations").show();
+        new Plotter("Variations").addAxis(variations, "Raw variations").show();
     }
 
     private Function<MobilePointTo, Double> getPointToVariationConversion() {
