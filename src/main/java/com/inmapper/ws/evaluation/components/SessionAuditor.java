@@ -1,4 +1,4 @@
-package com.inmapper.ws.service;
+package com.inmapper.ws.evaluation.components;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,21 +18,20 @@ import com.inmapper.ws.model.to.MobileSessionTo;
 
 @Component
 public class SessionAuditor {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionAuditor.class);
-
-    private static final String AUDIT_DIR_PATTERN = "." + File.separatorChar + "audit" + File.separatorChar + "%s";
+    
     private final ResteasyJacksonProvider jacksonProvider;
-
+    
     public SessionAuditor() {
         this.jacksonProvider = new ResteasyJacksonProvider();
     }
-
-    public void saveSession(MobileSessionTo session) {
+    
+    public void saveSession(File file, MobileSessionTo session) {
         ObjectMapper mapper = this.jacksonProvider.locateMapper(MobileSessionTo.class, MediaType.APPLICATION_JSON_TYPE);
-
+        
         try {
-            mapper.writeValue(new File(getAuditFilename(createNewWith(session.getToken()))), session);
+            mapper.writeValue(file, session);
         } catch (JsonGenerationException e) {
             LOGGER.error("Error saving session object as JSON in a file", e);
         } catch (JsonMappingException e) {
@@ -41,13 +40,13 @@ public class SessionAuditor {
             LOGGER.error("Error saving session object as JSON in a file", e);
         }
     }
-
-    public MobileSessionTo loadSession(String token) {
+    
+    public MobileSessionTo loadSession(File file) {
         ObjectMapper mapper = this.jacksonProvider.locateMapper(MobileSessionTo.class, MediaType.APPLICATION_JSON_TYPE);
         MobileSessionTo value = null;
-
+        
         try {
-            value = mapper.readValue(new File(getAuditFilename(token)), MobileSessionTo.class);
+            value = mapper.readValue(file, MobileSessionTo.class);
         } catch (JsonParseException e) {
             LOGGER.error("Error loading session object as JSON in a file", e);
         } catch (JsonMappingException e) {
@@ -57,12 +56,5 @@ public class SessionAuditor {
         }
         return value;
     }
-
-    private String createNewWith(String token) {
-        return String.format("%s-%s", String.valueOf(System.currentTimeMillis()), token);
-    }
-
-    private String getAuditFilename(String file) {
-        return String.format(AUDIT_DIR_PATTERN, file);
-    }
+    
 }

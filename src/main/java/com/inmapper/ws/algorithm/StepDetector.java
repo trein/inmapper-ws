@@ -41,20 +41,16 @@ public class StepDetector {
     }
     
     private void validatePostiions(Collection<MobilePointTo> positions) throws InvalidMobilePositionException {
-        if (positions.size() < (2 * MINIMUM_WINDOW_LENGTH)) {
-            throw new InvalidMobilePositionException("Insufficient number of examples for algorithm.");
-        }
+        if (positions.size() < (2 * MINIMUM_WINDOW_LENGTH)) { throw new InvalidMobilePositionException(
+                "Insufficient number of examples for algorithm."); }
     }
     
     private class SlidingWindow {
         
         private final List<MobilePointTo> inWindowPoints;
-        private final double calibrationStandardDeviation;
         
         public SlidingWindow(List<MobilePointTo> inWindowPoints) {
             this.inWindowPoints = inWindowPoints;
-            this.calibrationStandardDeviation = MobilePointTo.computeStandardDeviation(inWindowPoints).doubleValue();
-            System.out.println(this.calibrationStandardDeviation);
         }
         
         public void pushNewPoint(MobilePointTo point) {
@@ -71,9 +67,8 @@ public class StepDetector {
             MobilePointTo windowMedian = getMedian();
             Double standardDeviation = MobilePointTo.computeStandardDeviation(this.inWindowPoints);
             
-            if (standardDeviation.doubleValue() < (this.calibrationStandardDeviation * 0.9)) {
-                return false;
-            }
+            if (standardDeviation.doubleValue() < STANDARD_DEVIATION_THRESHOLD) { return false; }
+            
             for (MobilePointTo point : this.inWindowPoints) {
                 Double variation = point.getVariation();
                 

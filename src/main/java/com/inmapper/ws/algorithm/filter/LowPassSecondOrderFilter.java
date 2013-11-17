@@ -1,4 +1,4 @@
-package com.inmapper.ws.algorithm;
+package com.inmapper.ws.algorithm.filter;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +16,7 @@ import com.inmapper.ws.model.to.MobilePointTo;
 @Component
 public class LowPassSecondOrderFilter implements Filter {
     
-    private static final int ACC_NOISE_ATTENUATION = 3;
+    // private static final int ACC_NOISE_ATTENUATION = 3;
     
     private static final double RATE_HZ = 40;
     private static final double CUTOFF_FREQ_HZ = 15;
@@ -68,8 +68,8 @@ public class LowPassSecondOrderFilter implements Filter {
         return Double.valueOf((current * alpha) + (previous - (1 - alpha)));
     }
     
-    private double clamp(double value) {
-        return Math.max(0, Math.min(1, value));
-        
-    }
+    // private double clamp(double value) {
+    // return Math.max(0, Math.min(1, value));
+    //
+    // }
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inmapper.ws.evaluation.components.DataAnalysis;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.to.MobileSessionTo;
@@ -29,7 +30,7 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     private MappingService service;
     
     @Autowired
-    private SessionAuditor auditor;
+    private DataAnalysis analysis;
     
     @Override
     public Response health() {
@@ -47,7 +48,7 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     
     @Override
     public Response positions(MobileSessionTo session) throws InvalidMobilePositionException {
-        this.auditor.saveSession(session);
+        this.analysis.recordSession(session);
         
         String roomId = this.service.handlePosition(session);
         
