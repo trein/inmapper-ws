@@ -1,4 +1,4 @@
-package com.inmapper.ws.algorithm;
+package com.inmapper.ws.algorithm.stepdetector.ios;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.inmapper.ws.algorithm.StepDetector;
 import com.inmapper.ws.algorithm.filter.Filter;
 import com.inmapper.ws.algorithm.filter.LowPassFirstOrderFilter;
 import com.inmapper.ws.evaluation.components.FileGenerator;
@@ -52,7 +53,8 @@ public class IOSMappingStepDetectorTest {
     private List<MobilePointTo> retrieveSteps(String filename) throws InvalidMobilePositionException {
         File existentFileForData = FileGenerator.existentFileForData("ios-mapping", filename);
         MobileSessionTo mobileSessionTo = this.sessionAuditor.loadSession(existentFileForData);
-        return this.stepDetector.detectSteps(mobileSessionTo.getPositions());
+        List<MobilePointTo> points = this.filter.filter(mobileSessionTo.getPositions());
+        return this.stepDetector.detectSteps(points);
     }
     
 }

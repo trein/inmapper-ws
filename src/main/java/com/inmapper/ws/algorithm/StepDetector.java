@@ -18,7 +18,7 @@ import com.inmapper.ws.model.to.MobilePointTo;
 public class StepDetector {
     
     private static final int MINIMUM_WINDOW_LENGTH = 13;
-    private static final double STANDARD_DEVIATION_THRESHOLD = 0.87;
+    private static final double STANDARD_DEVIATION_THRESHOLD = 0.85;
     
     public List<MobilePointTo> detectSteps(List<MobilePointTo> positions) throws InvalidMobilePositionException {
         List<MobilePointTo> filteredPoints = Lists.newArrayList();

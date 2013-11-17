@@ -15,7 +15,6 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ public class Plotter {
     public void save(File file, String title, List<PlotData> dataList) {
         JFreeChart chart = createChart(title, dataList);
         try {
-            ChartUtilities.saveChartAsPNG(file, chart, 300, 300);
+            ChartUtilities.saveChartAsPNG(file, chart, 500, 500);
         } catch (IOException e) {
             LOGGER.error("Error saving chart.", e);
         }
@@ -72,7 +71,6 @@ public class Plotter {
         XYSeriesCollection series = createSeries(dataList);
         JFreeChart chart = ChartFactory.createXYLineChart(title, "Time * Fs", "Value", series, PlotOrientation.VERTICAL, true,
                 true, false);
-        XYPlot plot = chart.getXYPlot();
         Font titleFont = new Font("Meiryo", Font.PLAIN, 12);
         Font legendFont = new Font("Meiryo", Font.PLAIN, 8);
         
@@ -82,20 +80,9 @@ public class Plotter {
         XYPlot xyp = chart.getXYPlot();
         xyp.getDomainAxis().setLabelFont(titleFont); // X
         xyp.getRangeAxis().setLabelFont(titleFont); // Y
-        // xyp.getDomainAxis().setRange(-610, 610);
-        // xyp.getRangeAxis().setRange(-610, 610);
         xyp.getDomainAxis().setTickLabelFont(legendFont);
         xyp.getRangeAxis().setTickLabelFont(legendFont);
         xyp.getDomainAxis().setVerticalTickLabels(true);
-        // xyp.getDomainAxis().setFixedAutoRange(100);
-        // xyp.getRangeAxis().setFixedAutoRange(100);
-        
-        // fill and outline
-        XYLineAndShapeRenderer r = (XYLineAndShapeRenderer) plot.getRenderer();
-        // r.setSeriesOutlinePaint(0, Color.RED);
-        // r.setSeriesOutlinePaint(1, Color.BLUE);
-        r.setSeriesShapesFilled(0, false);
-        r.setSeriesShapesFilled(1, false);
         
         return chart;
     }
@@ -103,7 +90,7 @@ public class Plotter {
     private void createFrame(JPanel panel) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(10, 10, 500, 500);
+        frame.setBounds(10, 10, 700, 700);
         frame.setTitle("Data Plot");
         frame.setVisible(true);
         frame.getContentPane().add(panel, BorderLayout.CENTER);

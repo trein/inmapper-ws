@@ -13,7 +13,10 @@ public class Evaluations {
     }
     
     private void start() {
-        // 60 step mapping test
+        // guilly's 60 step mapping test
         this.analysis.analyze("ios-mapping", "1384645335327-9d21f629-9555-4071-ac22-68176db4c5ab");
+        
+        // navjot's 10 step test
+        this.analysis.analyze("ios-steps", "1384642987877-432233f4-1cff-4e5e-a675-6737b1b464ba");
     }
 }

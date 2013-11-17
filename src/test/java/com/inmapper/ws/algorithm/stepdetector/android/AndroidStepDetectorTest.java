@@ -1,4 +1,4 @@
-package com.inmapper.ws.algorithm;
+package com.inmapper.ws.algorithm.stepdetector.android;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.inmapper.ws.algorithm.StepDetector;
 import com.inmapper.ws.evaluation.components.FileGenerator;
 import com.inmapper.ws.evaluation.components.SessionAuditor;
 import com.inmapper.ws.exception.InvalidMobilePositionException;

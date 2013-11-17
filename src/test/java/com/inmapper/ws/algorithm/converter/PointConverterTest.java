@@ -1,4 +1,4 @@
-package com.inmapper.ws.algorithm;
+package com.inmapper.ws.algorithm.converter;
 
 import static org.junit.Assert.*;
 

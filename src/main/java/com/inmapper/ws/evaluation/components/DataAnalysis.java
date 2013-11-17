@@ -10,6 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.inmapper.ws.algorithm.filter.Filter;
 import com.inmapper.ws.algorithm.filter.LowPassFirstOrderFilter;
+import com.inmapper.ws.algorithm.filter.LowPassSecondOrderFilter;
 import com.inmapper.ws.evaluation.components.Plotter.PlotData;
 import com.inmapper.ws.model.to.MobilePointTo;
 import com.inmapper.ws.model.to.MobileSessionTo;
@@ -29,31 +30,38 @@ public class DataAnalysis {
     public void recordSession(MobileSessionTo session) {
         File dataFile = FileGenerator.existentFileForData(session.getRoomId(), session.getToken());
         File imageFile = FileGenerator.existentFileForData(session.getRoomId(), session.getToken());
-        this.auditor.saveSession(dataFile, session);
-        this.plotter.save(imageFile, "Raw Data", createData(session));
-    }
-    
-    private List<PlotData> createData(MobileSessionTo session) {
-        Function<MobilePointTo, Double> pointToVariation = getPointToVariationConversion();
-        List<MobilePointTo> measurements = session.getPositions();
-        List<Double> variations = Lists.transform(measurements, pointToVariation);
+        List<MobilePointTo> positions = session.getPositions();
         
-        return Lists.newArrayList(new Plotter.PlotData("raw mesurements", variations));
+        this.auditor.saveSession(dataFile, session);
+        this.plotter.save(imageFile, "Raw Data", createData(new String[] { "raw data" }, new List[] { positions }));
     }
     
     public void analyze(String operation, String sessionName) {
         File dataFile = FileGenerator.existentFileForData(operation, sessionName);
-        MobileSessionTo session = new SessionAuditor().loadSession(dataFile);
-        Filter filter = new LowPassFirstOrderFilter();
+        MobileSessionTo session = this.auditor.loadSession(dataFile);
+        Filter firstFilter = new LowPassFirstOrderFilter();
+        Filter secondFilter = new LowPassSecondOrderFilter();
         
         List<MobilePointTo> measurements = session.getPositions();
-        List<MobilePointTo> filteredPoints = filter.filter(measurements);
+        List<MobilePointTo> filteredFirstPoints = firstFilter.filter(measurements);
+        List<MobilePointTo> filteredSecondPoints = secondFilter.filter(measurements);
+        
+        this.plotter.show("Variations", createData(new String[] { "raw data", "first order filter", "second order filter" },
+                new List[] { measurements, filteredFirstPoints, filteredSecondPoints }));
+    }
+    
+    @SuppressWarnings("unchecked")
+    private List<PlotData> createData(String[] titles, List<?>[] pointsArray) {
+        List<PlotData> plotData = Lists.newArrayList();
         Function<MobilePointTo, Double> pointToVariation = getPointToVariationConversion();
         
-        List<Double> variations = Lists.transform(measurements, pointToVariation);
-        List<Double> filteredVariations = Lists.transform(filteredPoints, pointToVariation);
-        
-        this.plotter.show("Variations", createData(session));
+        for (int index = 0; index < pointsArray.length; index++) {
+            String title = titles[index];
+            List<MobilePointTo> measurements = (List<MobilePointTo>) pointsArray[index];
+            List<Double> variations = Lists.transform(measurements, pointToVariation);
+            plotData.add(new Plotter.PlotData(title, variations));
+        }
+        return plotData;
     }
     
     private Function<MobilePointTo, Double> getPointToVariationConversion() {

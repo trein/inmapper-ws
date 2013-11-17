@@ -16,12 +16,12 @@ import com.inmapper.ws.model.to.MobilePointTo;
 @Component
 public class LowPassFirstOrderFilter implements Filter {
     
-    private static final int DEFAULT_SMOOTHING = 2;
+    private static final double DEFAULT_SMOOTHING = 1.2;
     
     /*
      * Smoothing the strength of the smoothing filter; 1=no change, larger values smoothes more.
      */
-    private final int smoothing = DEFAULT_SMOOTHING;
+    private final double smoothing = DEFAULT_SMOOTHING;
     
     /**
      * Perform values filtering according to smoothing chosen.
@@ -29,6 +29,7 @@ public class LowPassFirstOrderFilter implements Filter {
      * @param values collection of numbers that will be modified in place.
      * @return filtered values.
      */
+    @Override
     public List<MobilePointTo> filter(Collection<MobilePointTo> points) {
         List<MobilePointTo> filteredPoints = Lists.newArrayList();
         MobilePointTo[] values = points.toArray(new MobilePointTo[0]);
