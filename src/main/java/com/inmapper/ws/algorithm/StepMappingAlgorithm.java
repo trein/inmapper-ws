@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.inmapper.ws.algorithm.filter.Filter;
+import com.inmapper.ws.algorithm.stepdetection.StepDetector;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.model.domain.UserLocation;
 import com.inmapper.ws.model.to.MobilePointTo;

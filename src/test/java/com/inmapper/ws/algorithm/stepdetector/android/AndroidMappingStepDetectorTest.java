@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.inmapper.ws.algorithm.StepDetector;
+import com.inmapper.ws.algorithm.stepdetection.StepDetector;
 import com.inmapper.ws.evaluation.components.FileGenerator;
 import com.inmapper.ws.evaluation.components.SessionAuditor;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
