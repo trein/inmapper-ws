@@ -52,7 +52,7 @@ public class MobilePointTo {
      * independent of the device orientation.
      */
     @JsonIgnore
-    public Double getVariation() {
+    public Double getAccelerationNorm() {
         return Double.valueOf(Math.sqrt((this.x.doubleValue() * this.x.doubleValue())
                 + (this.y.doubleValue() * this.y.doubleValue()) + (this.z.doubleValue() * this.z.doubleValue())));
         
@@ -87,7 +87,7 @@ public class MobilePointTo {
         
         if (!points.isEmpty()) {
             for (MobilePointTo point : points) {
-                variationSum += point.getVariation().doubleValue();
+                variationSum += point.getAccelerationNorm().doubleValue();
             }
             average = Double.valueOf(variationSum / examples);
         }
@@ -103,7 +103,7 @@ public class MobilePointTo {
         double variationSum = 0.0;
         
         for (MobilePointTo point : points) {
-            variationSum += Math.pow((average - point.getVariation().doubleValue()), 2);
+            variationSum += Math.pow((average - point.getAccelerationNorm().doubleValue()), 2);
         }
         return Double.valueOf(Math.sqrt(variationSum / points.size()));
     }

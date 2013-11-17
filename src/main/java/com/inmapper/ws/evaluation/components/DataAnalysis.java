@@ -69,7 +69,7 @@ public class DataAnalysis {
             
             @Override
             public Double apply(MobilePointTo point) {
-                return point.getVariation();
+                return point.getAccelerationNorm();
             }
         };
         return pointToVariation;

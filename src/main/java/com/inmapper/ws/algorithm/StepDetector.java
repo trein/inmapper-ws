@@ -70,9 +70,9 @@ public class StepDetector {
             if (standardDeviation.doubleValue() < STANDARD_DEVIATION_THRESHOLD) { return false; }
             
             for (MobilePointTo point : this.inWindowPoints) {
-                Double variation = point.getVariation();
+                Double variation = point.getAccelerationNorm();
                 
-                if (windowMedian.getVariation().doubleValue() < variation.doubleValue()) {
+                if (windowMedian.getAccelerationNorm().doubleValue() < variation.doubleValue()) {
                     // Median is no a peak, we can stop searching
                     return false;
                 }
