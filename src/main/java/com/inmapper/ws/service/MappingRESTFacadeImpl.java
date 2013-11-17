@@ -73,12 +73,12 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     
     @Override
     public Response convert(String operation, String filename) throws InvalidMobilePositionException {
-        File file = FileGenerator.existentFileForImage(operation, filename);
+        File file = FileGenerator.existentFileForData(operation, filename);
         MobileSessionTo session = this.auditor.loadSession(file);
         
         String roomId = this.service.handlePosition(session);
         
-        LOGGER.debug("POST session received with {}", session); //$NON-NLS-1$
+        LOGGER.debug("GET conversion session received with {}", session); //$NON-NLS-1$
         return Response.ok(String.format("{ \"room\": \"%s\" }", roomId)).build();
     }
 }
