@@ -28,8 +28,8 @@ public class DataAnalysis {
     }
     
     public void recordSession(MobileSessionTo session) {
-        File dataFile = FileGenerator.existentFileForData(session.getRoomId(), session.getToken());
-        File imageFile = FileGenerator.existentFileForData(session.getRoomId(), session.getToken());
+        File dataFile = FileGenerator.newFileForData(session.getRoomId(), session.getToken());
+        File imageFile = FileGenerator.newFileForImage(session.getRoomId(), session.getToken());
         List<MobilePointTo> positions = session.getPositions();
         
         this.auditor.saveSession(dataFile, session);

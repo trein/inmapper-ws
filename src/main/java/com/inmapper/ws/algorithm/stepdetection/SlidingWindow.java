@@ -9,8 +9,8 @@ import com.inmapper.ws.model.to.MobilePointTo;
 public class SlidingWindow {
     
     private static final int MINIMUM_WINDOW_LENGTH = 13;
-    private static final double STANDARD_DEVIATION_THRESHOLD = 0.84;
-    private static final int PEAK_EXAMPLES_SPAN_THRESHOLD = 8;
+    private static final double STANDARD_DEVIATION_THRESHOLD = 0.82;
+    private static final int PEAK_EXAMPLES_SPAN_THRESHOLD = 5;
     
     private int examplesCounter = MINIMUM_WINDOW_LENGTH;
     private int lastPeakCounter = 0;

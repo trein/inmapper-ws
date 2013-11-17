@@ -16,42 +16,35 @@ import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.model.to.MobilePointTo;
 import com.inmapper.ws.model.to.MobileSessionTo;
 
-public class IOSMappingStepDetectorTest {
+public class IOSLuizaStepDetectorTest {
     
     private final SessionAuditor sessionAuditor = new SessionAuditor();
     private final StepDetector stepDetector = new StepDetector();
     private final Filter filter = new LowPassFirstOrderFilter();
     
     @Test
-    public void testForMapping1() throws InvalidMobilePositionException {
-        List<MobilePointTo> mobilePoints = retrieveSteps("1384643993164-5d5e7dfb-7e32-4bdb-8251-e0bbb93e9cd9");
+    public void testForStep5() throws InvalidMobilePositionException {
+        List<MobilePointTo> mobilePoints = retrieveSteps("1384707996983-c8ecd0f0-5c81-48fe-b76d-963b63de949a");
         
-        assertEquals(59, mobilePoints.size());
+        assertEquals(5, mobilePoints.size());
     }
     
     @Test
-    public void testForMapping2() throws InvalidMobilePositionException {
-        List<MobilePointTo> mobilePoints = retrieveSteps("1384644980175-c5ec3f74-8d2e-439b-a6e1-c3cf50baeb0b");
+    public void testForStep10() throws InvalidMobilePositionException {
+        List<MobilePointTo> mobilePoints = retrieveSteps("1384708043574-029ba177-3f12-4747-88b7-0a36e790a2a5");
         
-        assertEquals(60, mobilePoints.size());
+        assertEquals(10, mobilePoints.size());
     }
     
     @Test
-    public void testForMapping3() throws InvalidMobilePositionException {
-        List<MobilePointTo> mobilePoints = retrieveSteps("1384645335327-9d21f629-9555-4071-ac22-68176db4c5ab");
+    public void testForStep15() throws InvalidMobilePositionException {
+        List<MobilePointTo> mobilePoints = retrieveSteps("1384708084600-d3cf49f4-53e7-4698-a533-a640b690e1ae");
         
-        assertEquals(60, mobilePoints.size());
-    }
-    
-    @Test
-    public void testForMapping4() throws InvalidMobilePositionException {
-        List<MobilePointTo> mobilePoints = retrieveSteps("1384645335327-9d21f629-9555-4071-ac22-68176db4c5ab");
-        
-        assertEquals(60, mobilePoints.size());
+        assertEquals(15, mobilePoints.size());
     }
     
     private List<MobilePointTo> retrieveSteps(String filename) throws InvalidMobilePositionException {
-        File existentFileForData = FileGenerator.existentFileForData("ios-mapping", filename);
+        File existentFileForData = FileGenerator.existentFileForData("ios-steps", filename);
         MobileSessionTo mobileSessionTo = this.sessionAuditor.loadSession(existentFileForData);
         List<MobilePointTo> points = this.filter.filter(mobileSessionTo.getPositions());
         return this.stepDetector.detectSteps(points);
