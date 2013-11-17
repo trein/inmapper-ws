@@ -38,6 +38,13 @@ public interface MappingRESTFacade {
     Response positions(MobileSessionTo position) throws InvalidMobilePositionException;
     
     @GET
+    @Path("/convert/{operation}/{filename}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GZIP
+    Response convert(@PathParam("operation") String operation, @PathParam("filename") String filename)
+            throws InvalidMobilePositionException;
+    
+    @GET
     @Path("{room_id}/mappings")
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP

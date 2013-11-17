@@ -1,5 +1,7 @@
 package com.inmapper.ws.service;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inmapper.ws.evaluation.components.DataAnalysis;
+import com.inmapper.ws.evaluation.components.FileGenerator;
+import com.inmapper.ws.evaluation.components.SessionAuditor;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.exception.ResourceNotFoundException;
 import com.inmapper.ws.model.to.MobileSessionTo;
@@ -31,6 +35,9 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
     
     @Autowired
     private DataAnalysis analysis;
+    
+    @Autowired
+    private SessionAuditor auditor;
     
     @Override
     public Response health() {
@@ -62,5 +69,16 @@ public class MappingRESTFacadeImpl implements MappingRESTFacade {
         
         LOGGER.debug("GET room locations received with room id {}", roomId); //$NON-NLS-1$
         return Response.ok(mapping).build();
+    }
+    
+    @Override
+    public Response convert(String operation, String filename) throws InvalidMobilePositionException {
+        File file = FileGenerator.existentFileForImage(operation, filename);
+        MobileSessionTo session = this.auditor.loadSession(file);
+        
+        String roomId = this.service.handlePosition(session);
+        
+        LOGGER.debug("POST session received with {}", session); //$NON-NLS-1$
+        return Response.ok(String.format("{ \"room\": \"%s\" }", roomId)).build();
     }
 }
