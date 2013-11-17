@@ -3,6 +3,7 @@ package com.inmapper.ws.algorithm;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.inmapper.ws.exception.InvalidMobilePositionException;
@@ -20,12 +21,13 @@ import com.inmapper.ws.model.to.MobileSessionTo;
 @Component
 public class StepMappingAlgorithm implements MappingAlgorithm {
     
-    private final LowPassFilter filter;
+    private final Filter filter;
     private final StepDetector stepDetector;
     private final PointConverter converter;
     
     @Autowired
-    public StepMappingAlgorithm(LowPassFilter filter, StepDetector stepDetector, PointConverter converter) {
+    public StepMappingAlgorithm(@Qualifier("lowPassFirstOrderFilter") Filter filter, StepDetector stepDetector,
+            PointConverter converter) {
         this.filter = filter;
         this.stepDetector = stepDetector;
         this.converter = converter;

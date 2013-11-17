@@ -14,14 +14,20 @@ import com.inmapper.ws.model.to.MobilePointTo;
  * @author trein
  */
 @Component
-public class LowPassFilter {
+public class LowPassSecondOrderFilter implements Filter {
     
-    private static final int DEFAULT_SMOOTHING = 2;
+    private static final int ACC_NOISE_ATTENUATION = 3;
     
-    /*
-     * Smoothing the strength of the smoothing filter; 1=no change, larger values smoothes more.
-     */
-    private final int smoothing = DEFAULT_SMOOTHING;
+    private static final double RATE_HZ = 40;
+    private static final double CUTOFF_FREQ_HZ = 15;
+    
+    private final double filterConstant;
+    
+    public LowPassSecondOrderFilter() {
+        double dt = 1.0 / RATE_HZ;
+        double RC = 1.0 / CUTOFF_FREQ_HZ;
+        this.filterConstant = dt / (dt + RC);
+    }
     
     /**
      * Perform values filtering according to smoothing chosen.
@@ -29,6 +35,7 @@ public class LowPassFilter {
      * @param values collection of numbers that will be modified in place.
      * @return filtered values.
      */
+    @Override
     public List<MobilePointTo> filter(Collection<MobilePointTo> points) {
         List<MobilePointTo> filteredPoints = Lists.newArrayList();
         MobilePointTo[] values = points.toArray(new MobilePointTo[0]);
@@ -47,8 +54,22 @@ public class LowPassFilter {
     }
     
     private Double computeFilter(Double currentValue, Double previousValue) {
+        double alpha = this.filterConstant;
+        
+        // if (adaptive) {
+        // double d = clamp((fabs(Norm(x, y, z) - Norm(accel.x, accel.y, accel.z)) /
+        // kAccelerometerMinStep) - 1.0);
+        // alpha = (((1.0 - d) * this.filterConstant) / ACC_NOISE_ATTENUATION) + (d *
+        // this.filterConstant);
+        // }
+        
         double previous = previousValue.doubleValue();
         double current = currentValue.doubleValue();
-        return Double.valueOf(previous + ((current - previous) / this.smoothing));
+        return Double.valueOf((current * alpha) + (previous - (1 - alpha)));
+    }
+    
+    private double clamp(double value) {
+        return Math.max(0, Math.min(1, value));
+        
     }
 }
