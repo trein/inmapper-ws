@@ -79,4 +79,12 @@ public class SlidingWindow {
         return positions.subList(MINIMUM_WINDOW_LENGTH, positions.size() - 1);
     }
     
+    public MobilePointTo getPeak() {
+        MobilePointTo median = getMedian();
+        // Double averageHeading = median.getHeading();
+        Double averageHeading = MobilePointTo.computeAverageHeading(this.windowPoints);
+        
+        return new MobilePointTo(median.getX(), median.getY(), median.getZ(), averageHeading);
+    }
+    
 }

@@ -2,6 +2,8 @@ package com.inmapper.ws.algorithm;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -17,6 +19,7 @@ import com.inmapper.ws.model.to.MobileSessionTo;
 @Component
 public class PointConverter {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(PointConverter.class);
     private static final double STEP_CONVERSION = 0.45;
     
     /**
@@ -27,19 +30,90 @@ public class PointConverter {
      * @return set of indoor points.
      */
     public List<UserLocation> convert(MobileSessionTo session, List<MobilePointTo> stepsPoints) {
+        // return convertRaw(session, stepsPoints);
+        return convertSquare(session, stepsPoints);
+    }
+    
+    private List<UserLocation> convertSquare(MobileSessionTo session, List<MobilePointTo> stepsPoints) {
         List<UserLocation> locations = Lists.newArrayList();
-        double stepLength = computeStepLength(session);
         UserLocation previousLocation = UserLocation.zeroValue();
         Double calibrationPhi = stepsPoints.remove(0).getHeading();
+        double stepLength = computeStepLength(session);
+        double previousTheta = 0;
+        boolean firstPoint = true;
         
         for (MobilePointTo point : stepsPoints) {
-            double theta = point.getHeading().doubleValue() - calibrationPhi.doubleValue();
-            double x = previousLocation.getX().doubleValue() + (stepLength * Math.cos(theta));
-            double y = previousLocation.getY().doubleValue() + (stepLength * Math.sin(theta));
+            double theta = computeTheta(calibrationPhi, point, previousTheta);
             
-            locations.add(new UserLocation(Double.valueOf(x), Double.valueOf(y)));
+            LOGGER.debug("Computated theta: {}", String.valueOf(theta));
+            if (!firstPoint && ((Math.abs(theta - previousTheta)) == 180)) {
+                theta = previousTheta;
+            }
+            double x = previousLocation.getX().doubleValue() + (stepLength * Math.cos((Math.PI * theta) / 180));
+            double y = previousLocation.getY().doubleValue() + (stepLength * Math.sin((Math.PI * theta) / 180));
+            
+            previousLocation = new UserLocation(Double.valueOf(x), Double.valueOf(y));
+            
+            LOGGER.debug("Mobile point: {}", point);
+            LOGGER.debug("Corrected theta: {}", String.valueOf(theta));
+            LOGGER.debug("Final point: {}", previousLocation);
+            LOGGER.debug("---------------------------------------------");
+            
+            firstPoint = false;
+            previousTheta = theta;
+            locations.add(previousLocation);
         }
         return locations;
+    }
+    
+    private List<UserLocation> convertRaw(MobileSessionTo session, List<MobilePointTo> stepsPoints) {
+        List<UserLocation> locations = Lists.newArrayList();
+        UserLocation previousLocation = UserLocation.zeroValue();
+        Double calibrationPhi = stepsPoints.remove(0).getHeading();
+        double previousTheta = 0;
+        double stepLength = computeStepLength(session);
+        
+        for (MobilePointTo point : stepsPoints) {
+            double theta = computeTheta(point, previousTheta, calibrationPhi);
+            double x = previousLocation.getX().doubleValue() + (stepLength * Math.cos((Math.PI * theta) / 180));
+            double y = previousLocation.getY().doubleValue() + (stepLength * Math.sin((Math.PI * theta) / 180));
+            
+            previousLocation = new UserLocation(Double.valueOf(x), Double.valueOf(y));
+            
+            LOGGER.debug("Mobile point: {}", point);
+            LOGGER.debug("Corrected theta: {}", String.valueOf(theta));
+            LOGGER.debug("Final point: {}", previousLocation);
+            LOGGER.debug("---------------------------------------------");
+            
+            previousTheta = theta;
+            locations.add(previousLocation);
+        }
+        return locations;
+    }
+    
+    private double computeTheta(Double calibrationPhi, MobilePointTo point, double previousTheta) {
+        double thetaDifference = computeTheta(point, previousTheta, calibrationPhi);
+        double theta;
+        
+        thetaDifference = (thetaDifference < 0) ? thetaDifference + 360 : thetaDifference;
+        
+        if ((thetaDifference >= 45) && (thetaDifference < 135)) {
+            theta = 90;
+        } else if ((thetaDifference >= 135) && (thetaDifference < 225)) {
+            theta = 180;
+        } else if ((thetaDifference >= 225) && (thetaDifference < 315)) {
+            theta = 270;
+        } else {
+            theta = 0;
+        }
+        return theta;
+    }
+    
+    private double computeTheta(MobilePointTo point, double previousTheta, Double calibrationPhi) {
+        double alpha = 0.0;
+        double currentTheta = point.getHeading().doubleValue() - calibrationPhi.doubleValue();
+        double nexTheta = ((1 - alpha) * currentTheta) + (alpha * previousTheta);
+        return nexTheta;
     }
     
     private double computeStepLength(MobileSessionTo session) {

@@ -94,6 +94,20 @@ public class MobilePointTo {
         return average;
     }
     
+    public static Double computeAverageHeading(Collection<MobilePointTo> points) {
+        Double average = Double.valueOf(0);
+        double variationSum = 0;
+        int examples = points.size();
+        
+        if (!points.isEmpty()) {
+            for (MobilePointTo point : points) {
+                variationSum += point.getHeading().doubleValue();
+            }
+            average = Double.valueOf(variationSum / examples);
+        }
+        return average;
+    }
+    
     public static MobilePointTo getMedian(List<MobilePointTo> window) {
         return window.get(window.size() / 2);
     }

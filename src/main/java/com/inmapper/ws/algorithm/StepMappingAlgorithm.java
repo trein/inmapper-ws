@@ -2,6 +2,8 @@ package com.inmapper.ws.algorithm;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,8 @@ import com.inmapper.ws.model.to.MobileSessionTo;
 @Component
 public class StepMappingAlgorithm implements MappingAlgorithm {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(StepMappingAlgorithm.class);
+    
     private final Filter filter;
     private final StepDetector stepDetector;
     private final PointConverter converter;
@@ -38,9 +42,15 @@ public class StepMappingAlgorithm implements MappingAlgorithm {
     @Override
     public List<UserLocation> decodePosition(MobileSessionTo session) throws InvalidMobilePositionException {
         List<MobilePointTo> filteredPositions = this.filter.filter(session.getPositions());
-        List<MobilePointTo> stepsPoints = this.stepDetector.detectSteps(filteredPositions);
+        LOGGER.debug("Finished filtering");
         
-        return this.converter.convert(session, stepsPoints);
+        List<MobilePointTo> stepsPoints = this.stepDetector.detectSteps(filteredPositions);
+        LOGGER.debug("Finished Steps Detection: {} steps detected", String.valueOf(stepsPoints.size()));
+        
+        List<UserLocation> convertedPoints = this.converter.convert(session, stepsPoints);
+        LOGGER.debug("Finished conversion");
+        
+        return convertedPoints;
     }
     
 }

@@ -27,7 +27,7 @@ public class StepDetector {
             window.pushNewPoint(point);
             
             if (window.isMedianAPeak()) {
-                filteredPoints.add(window.getMedian());
+                filteredPoints.add(window.getPeak());
             }
         }
         return filteredPoints;

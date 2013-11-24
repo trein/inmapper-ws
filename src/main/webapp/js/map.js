@@ -92,7 +92,7 @@ function drawFrame() {
 
 function drawSnaps() {
     var context = getContext();
-    var radius = 1;
+    var radius = 2;
 
     context.lineWidth = 1;
     context.strokeStyle = '#dadada';
@@ -154,7 +154,7 @@ function assembleMobileData(data) {
             var value = userSession[locationsIndex];
             var tagItem = pattern.format(value.roomId, value.mobileId, value.x, value.y);
             
-            console.log("Received value: " + value);
+            console.log("Received value: x=" + value.x + " y=" + value.y);
 
             $('.data', userTag).append(tagItem);
         }
@@ -165,25 +165,37 @@ function assembleMobileData(data) {
 function normalizeData(data) {
     var maxX = 0;
     var maxY = 0;
+    var minX = 9999999999;
+    var minY = 9999999999;
 
     loopOver(data, function(metadata) {
         var value = metadata["location"];
 
         maxX = (value.x > maxX) ? value.x : maxX;
         maxY = (value.y > maxY) ? value.y : maxY;
+        minX = (value.x < minX) ? value.x : minX;
+        minY = (value.y < minY) ? value.y : minY;
+        
+        console.log("Normalizing value: x=" + value.x + " y=" + value.y);
     });
 
-    var xFactor = (maxX * SCALE > WIDTH) ? WIDTH / maxX / SCALE : 1;
-    var yFactor = (maxY * SCALE > HEIGHT) ? HEIGHT / maxY / SCALE : 1;
+    var xWidth = maxX - minX;
+    var yWidth = maxY - minY;
+    var xFactor = (xWidth * SCALE > WIDTH) ? (WIDTH - 10) / xWidth / SCALE : 1;
+    var yFactor = (yWidth * SCALE > HEIGHT) ? (HEIGHT - 10) / yWidth / SCALE : 1;
+    var factor = (xFactor < yFactor) ? xFactor : yFactor;
 
-    console.log("X scaling factor value: " + xFactor + " for max " + maxX);
-    console.log("Y scaling factor value: " + yFactor + " for max " + maxY);
+    console.log("X scaling factor value: " + factor + " for max " + maxX);
+    console.log("Y scaling factor value: " + factor + " for max " + maxY);
+    
+    console.log("X min value: " + minX);
+    console.log("Y min value: " + minY);
 
     loopOver(data, function(metadata) {
         var value = metadata["location"];
 
-        value.x = value.x * xFactor;
-        value.y = value.y * yFactor;
+        value.x = (value.x - minX) * factor;
+        value.y = (value.y - minY) * factor;
     });
 }
 

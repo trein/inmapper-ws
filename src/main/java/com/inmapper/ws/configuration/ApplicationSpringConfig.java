@@ -60,7 +60,7 @@ public class ApplicationSpringConfig {
     private Properties getJpaProperties() {
         Properties jpaProperties = new Properties();
         
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+        jpaProperties.put("hibernate.hbm2ddl.auto", "create");
         jpaProperties.put("hibernate.show_sql", "false");
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.dialect", H2Dialect.class.getName());

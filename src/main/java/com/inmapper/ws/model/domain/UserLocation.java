@@ -59,6 +59,11 @@ public class UserLocation {
         return Objects.hashCode(this.id, this.x, this.y);
     }
     
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("x", this.x).add("y", this.y).toString();
+    }
+    
     @SuppressWarnings("boxing")
     public static UserLocation zeroValue() {
         return new UserLocation(0.0, 0.0);
