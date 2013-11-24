@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.inmapper.ws.algorithm.filter.Filter;
-import com.inmapper.ws.algorithm.filter.LowPassFirstOrderFilter;
-import com.inmapper.ws.algorithm.filter.LowPassSecondOrderFilter;
+import com.inmapper.ws.algorithm.filtering.Filter;
+import com.inmapper.ws.algorithm.filtering.LowPassFirstOrderFilter;
+import com.inmapper.ws.algorithm.filtering.LowPassSecondOrderFilter;
 import com.inmapper.ws.evaluation.components.Plotter.PlotData;
 import com.inmapper.ws.model.to.MobilePointTo;
 import com.inmapper.ws.model.to.MobileSessionTo;

@@ -5,6 +5,7 @@ URL = "/api/v/{0}/mappings";
 WIDTH = 720;
 HEIGHT = 440;
 SCALE = 10;
+margin = 20
 
 // Instance variables
 mappings = {}
@@ -119,7 +120,7 @@ function drawLocations(data, sessionIdFilters) {
             context.beginPath();
             context.lineWidth = 5;
             context.strokeStyle = 'gray';
-            context.arc(value.x * SCALE, value.y * SCALE, radius, 0, 2 * Math.PI, true);
+            context.arc(margin + value.x * SCALE, margin + value.y * SCALE, radius, 0, 2 * Math.PI, true);
             context.stroke();
         }
     });
@@ -181,8 +182,8 @@ function normalizeData(data) {
 
     var xWidth = maxX - minX;
     var yWidth = maxY - minY;
-    var xFactor = (xWidth * SCALE > WIDTH) ? (WIDTH - 10) / xWidth / SCALE : 1;
-    var yFactor = (yWidth * SCALE > HEIGHT) ? (HEIGHT - 10) / yWidth / SCALE : 1;
+    var xFactor = (xWidth * SCALE > WIDTH) ? (WIDTH - 2*margin) / xWidth / SCALE : 1;
+    var yFactor = (yWidth * SCALE > HEIGHT) ? (HEIGHT - 2*margin) / yWidth / SCALE : 1;
     var factor = (xFactor < yFactor) ? xFactor : yFactor;
 
     console.log("X scaling factor value: " + factor + " for max " + maxX);

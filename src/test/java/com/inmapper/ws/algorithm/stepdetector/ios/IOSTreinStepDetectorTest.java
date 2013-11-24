@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.inmapper.ws.algorithm.filter.Filter;
-import com.inmapper.ws.algorithm.filter.LowPassFirstOrderFilter;
+import com.inmapper.ws.algorithm.filtering.Filter;
+import com.inmapper.ws.algorithm.filtering.LowPassFirstOrderFilter;
 import com.inmapper.ws.algorithm.stepdetection.StepDetector;
 import com.inmapper.ws.evaluation.components.FileGenerator;
 import com.inmapper.ws.evaluation.components.SessionAuditor;

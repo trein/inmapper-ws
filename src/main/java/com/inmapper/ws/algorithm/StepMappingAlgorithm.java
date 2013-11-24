@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.inmapper.ws.algorithm.filter.Filter;
+import com.inmapper.ws.algorithm.conversion.PointConverter;
+import com.inmapper.ws.algorithm.filtering.Filter;
 import com.inmapper.ws.algorithm.stepdetection.StepDetector;
 import com.inmapper.ws.exception.InvalidMobilePositionException;
 import com.inmapper.ws.model.domain.UserLocation;
@@ -33,7 +34,7 @@ public class StepMappingAlgorithm implements MappingAlgorithm {
     
     @Autowired
     public StepMappingAlgorithm(@Qualifier("lowPassFirstOrderFilter") Filter filter, StepDetector stepDetector,
-            PointConverter converter) {
+            @Qualifier("squarePointConverter") PointConverter converter) {
         this.filter = filter;
         this.stepDetector = stepDetector;
         this.converter = converter;

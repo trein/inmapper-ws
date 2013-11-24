@@ -1,4 +1,4 @@
-package com.inmapper.ws.algorithm.filter;
+package com.inmapper.ws.algorithm.filtering;
 
 import java.util.Collection;
 import java.util.List;
