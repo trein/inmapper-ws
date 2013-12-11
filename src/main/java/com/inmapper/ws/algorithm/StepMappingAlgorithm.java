@@ -45,11 +45,29 @@ public class StepMappingAlgorithm implements MappingAlgorithm {
         List<MobilePointTo> filteredPositions = this.filter.filter(session.getPositions());
         LOGGER.debug("Finished filtering");
         
+        if (LOGGER.isDebugEnabled()) {
+            for (MobilePointTo mobilePoint : filteredPositions) {
+                LOGGER.debug("Filtered Point: {}", mobilePoint);
+            }
+        }
+        
         List<MobilePointTo> stepsPoints = this.stepDetector.detectSteps(filteredPositions);
         LOGGER.debug("Finished Steps Detection: {} steps detected", String.valueOf(stepsPoints.size()));
         
+        if (LOGGER.isDebugEnabled()) {
+            for (MobilePointTo mobilePoint : stepsPoints) {
+                LOGGER.debug("Step Point: {}", mobilePoint);
+            }
+        }
+        
         List<UserLocation> convertedPoints = this.converter.convert(session, stepsPoints);
         LOGGER.debug("Finished conversion");
+        
+        if (LOGGER.isDebugEnabled()) {
+            for (UserLocation point : convertedPoints) {
+                LOGGER.debug("Converted Point: {}", point);
+            }
+        }
         
         return convertedPoints;
     }

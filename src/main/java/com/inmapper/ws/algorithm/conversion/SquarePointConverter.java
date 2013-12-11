@@ -44,8 +44,10 @@ public class SquarePointConverter implements PointConverter {
             
             previousLocation = new UserLocation(Double.valueOf(x), Double.valueOf(y));
             
+            LOGGER.debug("Calibration phi: {}", String.valueOf(calibrationPhi));
             LOGGER.debug("Corrected theta: {}", String.valueOf(theta));
             LOGGER.debug("Mobile point: {}", point);
+            LOGGER.debug("Raw difference: {}", String.valueOf(point.getHeading().doubleValue() - calibrationPhi));
             LOGGER.debug("Final point: {}", previousLocation);
             LOGGER.debug("---------------------------------------------");
             

@@ -18,7 +18,7 @@ public class LowPassSecondOrderFilter implements Filter {
     
     // private static final int ACC_NOISE_ATTENUATION = 3;
     
-    private static final double RATE_HZ = 40;
+    private static final double RATE_HZ = 20;
     private static final double CUTOFF_FREQ_HZ = 15;
     
     private final double filterConstant;
@@ -48,7 +48,8 @@ public class LowPassSecondOrderFilter implements Filter {
             Double newZ = computeFilter(currentPoint.getZ(), previousPoint.getZ());
             Double newHeading = computeFilter(currentPoint.getHeading(), previousPoint.getHeading());
             
-            filteredPoints.add(new MobilePointTo(newX, newY, newZ, newHeading));
+            previousPoint = new MobilePointTo(newX, newY, newZ, newHeading);
+            filteredPoints.add(previousPoint);
         }
         return filteredPoints;
     }
@@ -65,7 +66,7 @@ public class LowPassSecondOrderFilter implements Filter {
         
         double previous = previousValue.doubleValue();
         double current = currentValue.doubleValue();
-        return Double.valueOf((current * alpha) + (previous - (1 - alpha)));
+        return Double.valueOf(previous + ((current - previous) * alpha));
     }
     
     // private double clamp(double value) {

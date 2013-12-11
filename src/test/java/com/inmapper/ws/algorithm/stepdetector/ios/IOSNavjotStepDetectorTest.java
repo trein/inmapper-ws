@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.inmapper.ws.algorithm.filtering.Filter;
-import com.inmapper.ws.algorithm.filtering.LowPassFirstOrderFilter;
+import com.inmapper.ws.algorithm.filtering.LowPassSecondOrderFilter;
 import com.inmapper.ws.algorithm.stepdetection.StepDetector;
 import com.inmapper.ws.evaluation.components.FileGenerator;
 import com.inmapper.ws.evaluation.components.SessionAuditor;
@@ -20,7 +20,7 @@ public class IOSNavjotStepDetectorTest {
     
     private final SessionAuditor sessionAuditor = new SessionAuditor();
     private final StepDetector stepDetector = new StepDetector();
-    private final Filter filter = new LowPassFirstOrderFilter();
+    private final Filter filter = new LowPassSecondOrderFilter();
     
     @Test
     public void testForStep20() throws InvalidMobilePositionException {

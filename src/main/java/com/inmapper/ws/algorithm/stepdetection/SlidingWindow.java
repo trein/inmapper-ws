@@ -9,7 +9,7 @@ import com.inmapper.ws.model.to.MobilePointTo;
 public class SlidingWindow {
     
     private static final int MINIMUM_WINDOW_LENGTH = 13;
-    private static final double STANDARD_DEVIATION_THRESHOLD = 0.82;
+    private static final double STANDARD_DEVIATION_THRESHOLD = 0.58;
     private static final int PEAK_EXAMPLES_SPAN_THRESHOLD = 5;
     
     private int examplesCounter = MINIMUM_WINDOW_LENGTH;
@@ -81,8 +81,8 @@ public class SlidingWindow {
     
     public MobilePointTo getPeak() {
         MobilePointTo median = getMedian();
-        // Double averageHeading = median.getHeading();
-        Double averageHeading = MobilePointTo.computeAverageHeading(this.windowPoints);
+        Double averageHeading = median.getHeading();
+        // Double averageHeading = MobilePointTo.computeAverageHeading(this.windowPoints);
         
         return new MobilePointTo(median.getX(), median.getY(), median.getZ(), averageHeading);
     }

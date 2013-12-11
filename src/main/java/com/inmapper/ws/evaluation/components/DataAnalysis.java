@@ -46,8 +46,16 @@ public class DataAnalysis {
         List<MobilePointTo> filteredFirstPoints = firstFilter.filter(measurements);
         List<MobilePointTo> filteredSecondPoints = secondFilter.filter(measurements);
         
-        this.plotter.show("Variations", createData(new String[] { "raw data", "first order filter", "second order filter" },
-                new List[] { measurements, filteredFirstPoints, filteredSecondPoints }));
+        // this.plotter.show("Variations", createData(new String[] { "raw data",
+        // "first order filter", "second order filter" },
+        // new List[] { measurements, filteredFirstPoints, filteredSecondPoints }));
+        // this.plotter.show("Headings", createHeadingData(new String[] { "raw data",
+        // "first order filter", "second order filter" },
+        // new List[] { measurements, filteredFirstPoints, filteredSecondPoints }));
+        this.plotter.show("Accelerometers Magnitude", createData(new String[] { "raw data", "second order filter" }, new List[] {
+                measurements, filteredSecondPoints }));
+        this.plotter.show("Heading Value", createHeadingData(new String[] { "raw data", "second order filter" }, new List[] {
+                measurements, filteredSecondPoints }));
     }
     
     @SuppressWarnings("unchecked")
@@ -64,12 +72,37 @@ public class DataAnalysis {
         return plotData;
     }
     
+    @SuppressWarnings("unchecked")
+    private List<PlotData> createHeadingData(String[] titles, List<?>[] pointsArray) {
+        List<PlotData> plotData = Lists.newArrayList();
+        Function<MobilePointTo, Double> pointToVariation = getPointToHeadingConversion();
+        
+        for (int index = 0; index < pointsArray.length; index++) {
+            String title = titles[index];
+            List<MobilePointTo> measurements = (List<MobilePointTo>) pointsArray[index];
+            List<Double> variations = Lists.transform(measurements, pointToVariation);
+            plotData.add(new Plotter.PlotData(title, variations));
+        }
+        return plotData;
+    }
+    
     private Function<MobilePointTo, Double> getPointToVariationConversion() {
         Function<MobilePointTo, Double> pointToVariation = new Function<MobilePointTo, Double>() {
             
             @Override
             public Double apply(MobilePointTo point) {
                 return point.getAccelerationNorm();
+            }
+        };
+        return pointToVariation;
+    }
+    
+    private Function<MobilePointTo, Double> getPointToHeadingConversion() {
+        Function<MobilePointTo, Double> pointToVariation = new Function<MobilePointTo, Double>() {
+            
+            @Override
+            public Double apply(MobilePointTo point) {
+                return point.getHeading();
             }
         };
         return pointToVariation;
