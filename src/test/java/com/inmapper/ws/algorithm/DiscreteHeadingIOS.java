@@ -19,7 +19,7 @@ public class DiscreteHeadingIOS {
     
     SessionAuditor sessionAuditor = new SessionAuditor();
     StepDetector stepDetector = new StepDetector();
-    List<MobilePointTo> mobilePointsDiscrete = new ArrayList<MobilePointTo>();
+    List<MobilePointTo> mobilePointsDiscrete = new ArrayList<>();
     List<MobilePointTo> mobilePoints;
     
     @Test
